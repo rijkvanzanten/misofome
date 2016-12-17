@@ -5,6 +5,6 @@ const exerciseSchema = mongoose.Schema({
   rating: Number
 });
 
-const User = mongoose.model('Exercise', exerciseSchema);
+const Exercise = mongoose.model('exercise', exerciseSchema);
 
 module.exports = Exercise;

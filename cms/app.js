@@ -1,8 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const path = require('path');
+const fs = require('fs');
+
+const models = path.join(__dirname, '/models');
 
 const app = express();
+
+// Register all models
+fs.readdirSync(models)
+  .filter(file => ~file.search(/^[^\.].*\.js$/))
+  .forEach(file => require(path.join(models, file)));
 
 // Connect to database
 mongoose.connect('mongodb://localhost/misofome');
