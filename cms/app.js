@@ -1,3 +1,9 @@
+/**
+ * Misofome
+ *
+ * @author Rijk van Zanten
+ */
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -27,10 +33,11 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-// Set 'master' routes
+// Set 'master' routes for api and admin
 app.use('/admin', require('./routes/admin'));
 app.use('/api', require('./routes/api'));
 
+// Send all other requests the PWA
 app.use('*', (req, res) => {
   res.send('PWA');
 });
