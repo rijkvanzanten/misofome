@@ -1,7 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const app = express();
+
+// Connect to database
+mongoose.connect('mongodb://localhost/misofome');
+const db = mongoose.connection;
+db.on('error', (err) => { console.error('Database connection failed: ' + err); });
+db.once('open', () => { console.log('Database successfully connected'); });
 
 // Set view engine
 app.set('views', __dirname + '/views');
