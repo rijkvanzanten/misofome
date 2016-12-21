@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import IconButton from 'material-ui/IconButton';
+import IconSettings from 'material-ui/svg-icons/action/settings';
 
 import TopBar from '../components/TopBar';
 import ExerciseCard from '../components/ExerciseCard';
@@ -7,7 +9,9 @@ class Profile extends Component {
   render() {
     return (
       <div>
-        <TopBar title="Profiel" />
+        <TopBar
+          title="Profiel"
+          iconElementRight={<IconButton><IconSettings /></IconButton>} />
         <header style={styles.header}>
           <img style={styles.avatar} src="http://placehold.it/500x500" />
           <h2 style={styles.name}>Harold</h2>
