@@ -1,27 +1,27 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const addModelIfExists = require('./middleware/add-model-if-exists');
+const checkToken = require('./middleware/check-token');
 
 const router = express.Router();
 
-const addModelIfExists = (req, res, next) => {
-  if(mongoose.modelSchemas[req.params.model]) {
-      res.model = mongoose.model(req.params.model);
-      next();
-  } else {
-    res.send(`Model [${req.params.model}] bestaat niet`);
-  }
-};
+router.use('/setup', require('./setup'));
 
-router.get('/:model', addModelIfExists, (req, res) => {
+router.use('/auth', require('./auth'));
+
+router.get('/:model', checkToken, addModelIfExists, (req, res) => {
   res.model.find({}, (err, records) => {
-    res.send(records);
+    res.json(records);
   });
 });
 
-router.post('/:model', addModelIfExists, (req, res) => {
+router.post('/:model', checkToken, addModelIfExists, (req, res) => {
   const doc = new res.model(req.body);
   doc.save((err, record, numAffected) => {
-    console.log(err, record, numAffected);
+    res.json({
+      success: true,
+      message: '',
+      records: record
+    });
   });
 });
 
