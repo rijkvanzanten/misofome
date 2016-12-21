@@ -20,7 +20,7 @@ class BottomNav extends Component {
         push('/');
         break;
       case 1:
-        push('/oefeningen');
+        push('/kaarten');
         break;
       case 2:
         push('/voortgang');
@@ -40,7 +40,7 @@ class BottomNav extends Component {
       case '/':
         this.setState({selectedIndex: 0});
         break;
-      case '/oefeningen':
+      case '/kaarten':
         this.setState({selectedIndex: 1});
         break;
       case '/voortgang':
@@ -63,7 +63,7 @@ class BottomNav extends Component {
           onTouchTap={() => this.select(0)}
         />
         <BottomNavigationItem
-          label="Oefeningen"
+          label="Kaarten"
           icon={<IconAssignment />}
           onTouchTap={() => this.select(1)}
         />

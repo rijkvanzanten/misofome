@@ -10,7 +10,7 @@ import IconAdd from 'material-ui/svg-icons/content/add';
 
 import ExerciseCard from '../components/ExerciseCard';
 
-class Exercises extends Component {
+class Cards extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +24,7 @@ class Exercises extends Component {
     return (
       <div>
         <TopBar
-          title="Oefeningen"
+          title="Kaarten"
           iconElementRight={<IconButton><IconAdd /></IconButton>} />
         <Toolbar>
           <ToolbarGroup firstChild={true}>
@@ -78,4 +78,4 @@ class Exercises extends Component {
   }
 }
 
-export default Exercises;
+export default Cards;
