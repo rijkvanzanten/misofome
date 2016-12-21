@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const app = require('../../app');
+const app = require('../../index');
 
 const router = express.Router();
 
