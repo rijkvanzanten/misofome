@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const app = require('../../../index');
+const app = require('../../../../index');
 
 module.exports = (req, res, next) => {
   const token = req.body.token || req.query.token || req.headers['x-access-token'];
