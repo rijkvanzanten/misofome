@@ -5,12 +5,13 @@ const template = require('./template-html');
 
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV != 'production';
+const apiOnly = process.env.API_ONLY || false;
 
 const app = express();
 
 app.use(compression());
 
-if(dev) app.use(require('./dev-server'));
+if(dev && !apiOnly) app.use(require('./dev-server'));
 
 app.use(express.static(path.join(__dirname, 'dist'), {
   index: false,
