@@ -1,10 +1,12 @@
 {
   "name": "misofome",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "",
   "main": "cms/server.js",
   "scripts": {
-    "dev": "nodemon cms/server.js"
+    "build": "webpack --progress",
+    "dev": "nodemon index.js --ignore src/*",
+    "start": "npm run build && NODE_ENV=production node index.js"
   },
   "repository": {
     "type": "git",
@@ -49,6 +51,8 @@
     "request": "^2.79.0"
   },
   "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "babel-loader": "^6.2.10",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
