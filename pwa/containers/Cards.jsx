@@ -52,8 +52,8 @@ class Cards extends Component {
                   <IconSort />
                 </IconButton>
               } >
-              <MenuItem primaryText="A-Z" />
-              <MenuItem primaryText="Populariteit" />
+              <MenuItem primaryText="Alfabetisch" />
+              <MenuItem primaryText="Populairst" />
             </IconMenu>
           </ToolbarGroup>
         </Toolbar>
