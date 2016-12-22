@@ -26,7 +26,7 @@ class ExerciseCard extends Component {
     const { title, user, description, imgUrl, comments } = this.props;
     const cardMedia = imgUrl ?
       (<CardMedia>
-        <img src={imgUrl} />
+        <img src={imgUrl} style={styles.image} height="150"/>
       </CardMedia>)
       : false;
 
@@ -60,5 +60,13 @@ class ExerciseCard extends Component {
     }, this.props.delay || 0);
   }
 }
+
+const styles = {
+  image: {
+    height: '150px',
+    width: '100%',
+    objectFit: 'cover'
+  }
+};
 
 export default ExerciseCard;
