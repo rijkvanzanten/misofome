@@ -7,32 +7,36 @@ const router = express.Router();
 
 router.post('/', (req, res) => {
   const User = mongoose.model('user');
-  User.findOne({
-    username: req.body.username
-  }, (err, user) => {
+
+  User.findOne({ username: req.body.username }, (err, user) => {
     if(err) throw err;
+
     if(!user) {
       res.json({
         success: false,
         message: 'Auth failed. User not found'
       });
-    } else if (user) {
-      if(user.password != req.body.password) {
-        res.json({
-          success: false,
-          message: 'Auth failed. Wrong password'
-        });
-      } else {
-        const token = jwt.sign(user, app.get('secretString'), {
-          expiresIn: '24h'
-        });
+    } else {
+      // Test a matching password
+      user.comparePassword(req.body.password, (err, isMatch) => {
+        if(err) throw err;
+        if(isMatch) {
+          const token = jwt.sign(user, app.get('secretString'), {
+            expiresIn: '24h'
+          });
 
-        res.json({
-          success: true,
-          message: 'Enjoy your token!',
-          token
-        });
-      }
+          res.json({
+            success: true,
+            message: 'Enjoy your token!',
+            token
+          });
+        } else {
+          res.json({
+            success: false,
+            message: 'Auth failed. Wrong password'
+          });
+        }
+      });
     }
   });
 });

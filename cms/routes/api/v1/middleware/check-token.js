@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 const app = require('../../../../index');
 
 module.exports = (req, res, next) => {
-  const token = req.body.token || req.query.token || req.headers['x-access-token'];
+  const token = req.body.access_token || req.query.access_token || req.headers['x-access-token'];
 
-  if(token.length > 0) {
+  if(token && token.length > 0) {
     jwt.verify(token, app.get('secretString'), (err, decoded) => {
       if(err) {
         res.json({

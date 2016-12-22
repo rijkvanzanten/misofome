@@ -22,10 +22,10 @@ fs.readdirSync(models)
   .forEach(file => require(path.join(models, file)));
 
 // Connect to database
-mongoose.connect('mongodb://localhost/misofome');
-const db = mongoose.connection;
-db.on('error', (err) => { console.error('Database connection failed: ' + err); });
-db.once('open', () => { console.log('Database successfully connected'); });
+mongoose.connect('mongodb://localhost/misofome', (err) => {
+  if(err) throw err;
+  console.log('Database connected');
+});
 
 // Log incoming requests to console
 app.use(morgan('dev'));

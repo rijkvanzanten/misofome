@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/RijkvanZanten/misofome#readme",
   "dependencies": {
+    "bcrypt": "^1.0.1",
     "body-parser": "^1.15.2",
     "chart.js": "^1.1.1",
     "compression": "^1.6.2",

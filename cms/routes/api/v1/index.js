@@ -14,13 +14,13 @@ router.use('/setup', require('./setup'));
 
 router.use('/auth', require('./auth'));
 
-router.get('/:model', addModelIfExists, (req, res) => {
+router.get('/:model', checkToken, addModelIfExists, (req, res) => {
   res.model.find({}, (err, records) => {
     res.json(records);
   });
 });
 
-router.post('/:model', addModelIfExists, (req, res) => {
+router.post('/:model', checkToken, addModelIfExists, (req, res) => {
   const doc = new res.model(req.body);
   doc.save((err, record, numAffected) => {
     res.json({
