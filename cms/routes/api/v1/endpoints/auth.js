@@ -1,7 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const app = require('../../../index');
+
+const app = require('../../../../index');
+
+const messages = require('../messages');
 
 const router = express.Router();
 
@@ -14,7 +17,7 @@ router.post('/', (req, res) => {
     if(!user) {
       res.json({
         success: false,
-        message: 'Auth failed. User not found'
+        message: messages.AUTH_USER_NOT_FOUND
       });
     } else {
       // Test a matching password
@@ -27,13 +30,13 @@ router.post('/', (req, res) => {
 
           res.json({
             success: true,
-            message: 'Enjoy your token!',
+            message: messages.AUTH_SUCCESS,
             token
           });
         } else {
           res.json({
             success: false,
-            message: 'Auth failed. Wrong password'
+            message: messages.AUTH_WRONG_PASSWORD
           });
         }
       });
