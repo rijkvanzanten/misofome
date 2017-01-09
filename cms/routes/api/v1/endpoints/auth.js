@@ -25,7 +25,7 @@ router.post('/', (req, res) => {
         if(err) throw err;
         if(isMatch) {
           const token = jwt.sign(user, app.get('secretString'), {
-            expiresIn: '24h'
+            expiresIn: '24 days'
           });
 
           res.json({
