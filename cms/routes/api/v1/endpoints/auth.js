@@ -42,4 +42,28 @@ router.post('/', (req, res) => {
   });
 });
 
+router.post('/register', (req, res) => {
+  const User = mongoose.model('user');
+  
+  if(!req.body.username || !req.body.password) res.json({
+    success: false,
+    message: 'Username or password not given'
+  });
+
+  const { username, password } = req.body;
+
+  const newUser = new User({
+    username, password
+  });
+
+  newUser.save((err, record, numAffected) => {
+    const token = jwt.sign(newUser, app.get('secretString'));
+
+    res.json({
+      success: true,
+      message: 'User created',
+      token
+    });
+  });
+});
 module.exports = router;

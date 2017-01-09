@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
           message: 'Failed to authenticate token.'
         });
       } else {
-        req.decoded = decoded;
+        req.user = decoded['_doc'];
         next();
       }
     });

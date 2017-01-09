@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
   const User = mongoose.model('user');
 
   new User({
-    username: 'Rijk van Zanten',
+    username: 'rijk',
     password: '1234567890',
     admin: true
   }).save((err) => {

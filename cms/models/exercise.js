@@ -1,10 +1,15 @@
 const mongoose = require('mongoose');
 
-const exerciseSchema = mongoose.Schema({
-  name: String,
-  rating: Number
+const cardSchema = mongoose.Schema({
+  title: String,
+  content: String,
+  category: String,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user'
+  }
 });
 
-const Exercise = mongoose.model('exercise', exerciseSchema);
+const Card = mongoose.model('card', cardSchema);
 
-module.exports = Exercise;
+module.exports = Card;
