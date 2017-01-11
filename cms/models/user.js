@@ -14,9 +14,10 @@ const UserSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'card',
   }],
+  displayName: String,
 });
 
-UserSchema.pre('save', function save(next) {
+UserSchema.pre('save', function hashPassword(next) {
   // Only hash the password if it has been modified
   if (!this.isModified('password')) return next();
 
@@ -33,6 +34,11 @@ UserSchema.pre('save', function save(next) {
       return next();
     });
   });
+});
+
+// TODO: Password hashen on update bij PUT request
+UserSchema.pre('update', function() {
+
 });
 
 UserSchema.methods.comparePassword = function comparePassword(candidatePassword, callback) {

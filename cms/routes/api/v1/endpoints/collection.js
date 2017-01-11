@@ -40,4 +40,22 @@ router.post('/:model', checkToken, addModelIfExists, (req, res) => {
   });
 });
 
+router.put('/:model/:id', checkToken, addModelIfExists, (req, res) => {
+  if (!req.params.id) {
+    res.json({
+      success: false,
+      message: 'ID param missing',
+    });
+  }
+
+  res.model.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true }, (err, record) => {
+    if (err) {
+      res.json({
+        success: false,
+        message: err,
+      });
+    } else res.json(record);
+  });
+});
+
 module.exports = router;
