@@ -7,20 +7,44 @@ import TopBar from '../components/TopBar';
 import IconButton from 'material-ui/IconButton';
 import IconSort from 'material-ui/svg-icons/content/sort';
 import IconAdd from 'material-ui/svg-icons/content/add';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import fetchCards from '../actions/cards';
 
 import ExerciseCard from '../components/ExerciseCard';
 
+const mapStateToProps = state => ({ user: state.user, cards: state.cards });
+const mapDispatchToProps = dispatch => bindActionCreators({ fetchCards }, dispatch);
+
+@connect(mapStateToProps, mapDispatchToProps)
 class Cards extends Component {
   constructor(props) {
     super(props);
+
+    const { cards } = this.props;
+
     this.state = {
       value: 1,
+      cards
     };
   }
 
   handleChange = (event, index, value) => this.setState({value});
 
+  componentDidMount() {
+    const { fetchCards, user } = this.props;
+    fetchCards(user.token);
+  }
+
   render() {
+    const cards = this.state.cards.map((d, i) =>
+      <ExerciseCard
+        key={i}
+        title={d.title}
+        user={'rijk'}
+        description={d.content}/>
+    );
+      
     return (
       <div>
         <TopBar
@@ -58,20 +82,7 @@ class Cards extends Component {
           </ToolbarGroup>
         </Toolbar>
         <main>
-          {[0, 1, 2, 3, 4].map((d, i) =>
-            <ExerciseCard
-              key={i}
-              title="Ontspanningsoefening"
-              user="Rijk van Zanten"
-              description="Oefening inhoud"
-              imgUrl="http://placehold.it/400x200"
-              comments={[
-                {
-                  user: 'Rijk',
-                  comment: 'hoi'
-                }
-              ]} />
-          )}
+          {cards}
         </main>
       </div>
     );
