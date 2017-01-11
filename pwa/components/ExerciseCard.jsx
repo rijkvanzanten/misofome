@@ -23,7 +23,7 @@ class ExerciseCard extends Component {
   }
 
   render() {
-    const { title, user, description, imgUrl, comments } = this.props;
+    const { title, user, description, imgUrl } = this.props;
     const cardMedia = imgUrl ?
       (<CardMedia>
         <img src={imgUrl} style={styles.image} height="150"/>

@@ -2,6 +2,27 @@ import React from 'react';
 import { render } from 'react-dom';
 import { renderToString } from 'react-dom/server';
 import { Router, RouterContext, browserHistory, match } from 'react-router';
+import { createStore, applyMiddleware, compose  } from 'redux';
+import { Provider  } from 'react-redux';
+import thunk from 'redux-thunk';
+
+import rootReducer from './reducers';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // eslint-disable-line
+
+const enhancers = composeEnhancers(applyMiddleware(thunk));
+
+if(module.hot) {
+  module.hot.accept('./reducers/index', () => {
+    const nextReducer = require('./reducers/index');
+    store.replaceReducer(nextReducer);
+  });
+}
+
+const store = createStore(
+  rootReducer,
+  enhancers
+);
 
 import routes from './routes';
 
@@ -14,10 +35,12 @@ import template from '../template-html.js';
 if(typeof document !== 'undefined') {
   const outlet = document.getElementById('root');
   render(
-    <Router
-      onUpdate={() => window.scrollTo(0, 0)}
-      history={browserHistory}
-      routes={routes} />,
+    <Provider store={store}>
+      <Router
+        onUpdate={() => window.scrollTo(0, 0)}
+        history={browserHistory}
+        routes={routes} />
+    </Provider>,
     outlet);
 }
 

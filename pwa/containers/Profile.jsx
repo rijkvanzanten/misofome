@@ -20,7 +20,7 @@ class Profile extends Component {
           <ExerciseCard
             title="Ontspanningsoefening"
             user="Rijk van Zanten"
-            description="In deze oefening ga je met minimale inspanning een hele app in elkaar beunen."
+            description="Oefening die gemaakt is door de huidige user"
             imgUrl="http://placehold.it/400x200"
             comments={[
               {
