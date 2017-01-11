@@ -9,7 +9,11 @@ const SALT_WORK_FACTOR = 10;
 
 const UserSchema = mongoose.Schema({
   username: { type: String, required: true, index: { unique: true } },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  favorites: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'card'
+  }]
 });
 
 UserSchema.pre('save', function(next) {

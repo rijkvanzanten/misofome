@@ -6,11 +6,12 @@ function requestKey() {
   };
 }
 
-function receiveKey(success, token) {
+function receiveKey(success, token, username) {
   return {
     type: 'RECEIVE_KEY',
     success, 
     token,
+    username
   };
 }
 
@@ -25,9 +26,9 @@ function authenticateUser(username, password) {
         if(err) throw err;
 
         if(res.body.success) {
-          dispatch(receiveKey(true, res.body.token));
+          dispatch(receiveKey(true, res.body.token, username));
         } else {
-          dispatch(receiveKey(false, ''));
+          dispatch(receiveKey(false, '', ''));
         }
       }); 
   };

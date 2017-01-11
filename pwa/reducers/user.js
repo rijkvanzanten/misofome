@@ -15,7 +15,8 @@ const user = function(state = defaultState, action) {
       return {
         ...state,
         loggingIn: false,
-        token: action.token
+        token: action.token,
+        username: action.username
       };
 
     default:
