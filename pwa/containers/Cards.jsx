@@ -14,9 +14,8 @@ import fetchCards from '../actions/cards';
 import ExerciseCard from '../components/ExerciseCard';
 
 const mapStateToProps = state => ({ user: state.user, cards: state.cards });
-const mapDispatchToProps = dispatch => bindActionCreators({ fetchCards }, dispatch);
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(mapStateToProps)
 class Cards extends Component {
   constructor(props) {
     super(props);
@@ -29,12 +28,7 @@ class Cards extends Component {
     };
   }
 
-  handleChange = (event, index, value) => this.setState({value});
-
-  componentDidMount() {
-    const { fetchCards, user } = this.props;
-    fetchCards(user.token);
-  }
+  handleChange = (event, index, value) => this.setState({value}); 
 
   render() {
     const cards = this.state.cards.map((d, i) =>

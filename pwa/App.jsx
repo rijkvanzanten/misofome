@@ -3,9 +3,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { connect } from 'react-redux';
 
+import Main from './Main';
 import LogIn from './containers/LogIn';
-
-import BottomNav from './components/BottomNav';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -21,21 +20,12 @@ const mapStateToProps = state => ({
 class App extends Component {
   DisplayName = 'Misofome';
 
-  renderApp() { 
-    return ( 
-      <div style={{backgroundColor: '#f5f5f5'}}>
-        {this.props.children}
-        <BottomNav />
-      </div>
-    );
-  }
-
   render() {
     const { token } = this.props.user;
 
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
-        {token.length ? this.renderApp() : <LogIn />}
+        {token.length ? <Main>{this.props.children}</Main> : <LogIn />}
       </MuiThemeProvider>
     );
   }
