@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const webpack = require('webpack');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -25,6 +26,9 @@ module.exports = {
       'process.env': {
         NODE_ENV: '"development"',
       },
+    }),
+    new HtmlWebpackPlugin({
+      template: 'template-html.ejs',
     }),
   ],
   module: {

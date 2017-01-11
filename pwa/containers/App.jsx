@@ -38,10 +38,13 @@ class App extends Component {
 
 App.DisplayName = 'Misofome';
 App.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element).isRequired,
   user: PropTypes.shape({
-    token: PropTypes.String.isRequired,
+    token: PropTypes.string.isRequired,
   }).isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
 };
 
 export default connect(mapStateToProps)(App);
