@@ -6,8 +6,8 @@ const cardSchema = mongoose.Schema({
   category: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
-  }
+    ref: 'user',
+  },
 });
 
 const Card = mongoose.model('card', cardSchema);
