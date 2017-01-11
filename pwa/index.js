@@ -46,6 +46,10 @@ if(typeof document !== 'undefined') {
 
 export default (locals, callback) => {
   match({ routes, location: locals.path }, (error, redirectLocation, renderProps) => {
-    callback(null, template(renderToString(<RouterContext {...renderProps} />), locals.assets.main));
+    callback(null, template(renderToString(
+      <Provider store={store}>
+        <RouterContext {...renderProps} />
+      </Provider>
+    ), locals.assets.main));
   });
 };

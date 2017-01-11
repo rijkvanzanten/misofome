@@ -33,7 +33,7 @@ const clientConfig = {
         warnings: false,
       }
     }),
-    new StaticSiteGeneratorPlugin('main', ['/'])
+    new StaticSiteGeneratorPlugin('main', ['/'], {}, { window: {} })
   ],
   module: {
     loaders: [
