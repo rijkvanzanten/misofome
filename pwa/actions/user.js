@@ -24,8 +24,8 @@ function authenticateUser(username, password) {
       .end((err, res) => {
         if(err) throw err;
 
-        if(res.success) {
-          dispatch(receiveKey(true, res.token));
+        if(res.body.success) {
+          dispatch(receiveKey(true, res.body.token));
         } else {
           dispatch(receiveKey(false, ''));
         }

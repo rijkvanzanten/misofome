@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
-const AppCachePlugin = require('appcache-webpack-plugin');
 
 const clientConfig = {
   entry: {
@@ -34,10 +33,7 @@ const clientConfig = {
         warnings: false,
       }
     }),
-    new StaticSiteGeneratorPlugin('main', ['/']),
-    new AppCachePlugin({
-      output: 'app.manifest'
-    })
+    new StaticSiteGeneratorPlugin('main', ['/'])
   ],
   module: {
     loaders: [
