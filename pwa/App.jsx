@@ -31,11 +31,11 @@ class App extends Component {
   }
 
   render() {
-    const { key } = this.props.user;
+    const { token } = this.props.user;
 
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
-        {key.length ? this.renderApp() : <LogIn />}
+        {token.length ? this.renderApp() : <LogIn />}
       </MuiThemeProvider>
     );
   }

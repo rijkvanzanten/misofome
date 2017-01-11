@@ -1,5 +1,5 @@
 const defaultState = {
-  key: '',
+  token: '',
   loggingIn: false
 };
 
@@ -15,7 +15,7 @@ const user = function(state = defaultState, action) {
       return {
         ...state,
         loggingIn: false,
-        key: action.key
+        token: action.token
       };
 
     default:
