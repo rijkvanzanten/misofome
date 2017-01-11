@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'static'), {
 app.use(require('./cms'));
 
 app.use('*', (req, res) => {
-  res.sendFile('./dist/index.html');
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.listen(port, () => {
