@@ -1,11 +1,13 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const express = require('express');
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
+const config = require('./webpack-dev.js');
+
 const app = express();
 
-const config = require('./webpack-dev.js');
 const compiler = webpack(config);
 const middleware = webpackMiddleware(compiler, {
   contentBase: 'src',
@@ -17,8 +19,8 @@ const middleware = webpackMiddleware(compiler, {
     timings: true,
     chunks: false,
     chunkModules: false,
-    modules: false
-  }
+    modules: false,
+  },
 });
 
 app.use(middleware);
