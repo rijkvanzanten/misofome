@@ -28,6 +28,7 @@ module.exports = (html, script) => `<!doctype html>
         font-family: 'Roboto', sans-serif;
         padding-top: 64px;
         padding-bottom: 56px;
+        background-color: #f5f5f5;
       }
     </style>
   </head>
