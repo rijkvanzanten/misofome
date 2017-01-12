@@ -12,29 +12,29 @@ router.post('/', (req, res) => {
   const User = mongoose.model('user');
 
   User.findOne({ username: req.body.username }, (err, user) => {
-    if(err) throw err;
+    if (err) throw err;
 
-    if(!user) {
+    if (!user) {
       res.json({
         success: false,
-        message: messages.AUTH_USER_NOT_FOUND
+        message: messages.AUTH_USER_NOT_FOUND,
       });
     } else {
       // Test a matching password
       user.comparePassword(req.body.password, (err, isMatch) => {
-        if(err) throw err;
-        if(isMatch) {
+        if (err) throw err;
+        if (isMatch) {
           const token = jwt.sign(user, app.get('secretString'));
 
           res.json({
             success: true,
             message: messages.AUTH_SUCCESS,
-            token
+            token,
           });
         } else {
           res.json({
             success: false,
-            message: messages.AUTH_WRONG_PASSWORD
+            message: messages.AUTH_WRONG_PASSWORD,
           });
         }
       });
@@ -44,17 +44,15 @@ router.post('/', (req, res) => {
 
 router.post('/register', (req, res) => {
   const User = mongoose.model('user');
-  
-  if(!req.body.username || !req.body.password) res.json({
-    success: false,
-    message: 'Username or password not given'
-  });
 
-  const { username, password } = req.body;
+  if (!req.body) {
+    res.json({
+      success: false,
+      message: 'User object missing',
+    });
+  }
 
-  const newUser = new User({
-    username, password
-  });
+  const newUser = new User(req.body.user);
 
   newUser.save((err, record, numAffected) => {
     const token = jwt.sign(newUser, app.get('secretString'));
@@ -62,7 +60,8 @@ router.post('/register', (req, res) => {
     res.json({
       success: true,
       message: 'User created',
-      token
+      token,
+      user: record,
     });
   });
 });

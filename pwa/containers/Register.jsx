@@ -1,14 +1,13 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Link, withRouter } from 'react-router';
+import { Link } from 'react-router';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import authenticateUser from '../actions/user';
-import logo from '../assets/icon-red.svg';
+import { registerUser } from '../actions/user';
 
 const styles = {
   container: {
@@ -26,7 +25,7 @@ const styles = {
     boxSizing: 'border-box',
   },
   image: {
-    width: '80%',
+    width: '30%',
   },
   button: {
     marginTop: '2em',
@@ -34,44 +33,41 @@ const styles = {
 };
 
 const mapStateToProps = state => ({ user: state.user });
-const mapDispatchToProps = dispatch => bindActionCreators({ authenticateUser }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ registerUser }, dispatch);
 
-class Login extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
 
-    this.login = this.login.bind(this);
+    this.state = {
+      registering: false,
+    };
+
+    this.register = this.register.bind(this);
   }
 
-  login() {
-    const { authenticateUser } = this.props; // eslint-disable-line no-shadow
+  register() {
+    const { registerUser } = this.props; // eslint-disable-line no-shadow
+
     const username = this.username.input.value;
     const password = this.password.input.value;
+    const fullName = this.fullName.input.value;
 
-    authenticateUser(username, password, (success) => {
+    registerUser({ username, password, fullName }, (success) => {
       if (success) {
-        const { location } = this.props;
-
-        if (location.state && location.state.nextPathname) {
-          this.props.router.replace(location.state.nextPathname);
-        } else {
-          this.props.router.replace('/');
-        }
+        this.props.router.replace('/');
       }
     });
+
+    this.setState({ registering: true });
   }
 
   render() {
-    const { loggingIn } = this.props.user;
-    const buttonLabel = loggingIn ? <CircularProgress size={20} thickness={2} /> : 'Log in';
+    const { registering } = this.state;
+    const buttonLabel = registering ? <CircularProgress size={20} thickness={2} /> : 'Registreer';
 
     return (
       <div style={styles.container}>
-        <img
-          style={styles.image}
-          src={logo}
-          alt="Logo Misofome"
-        />
         <TextField
           floatingLabelText="Gebruikersnaam"
           fullWidth
@@ -83,18 +79,23 @@ class Login extends Component {
           type="password"
           ref={(el) => { this.password = el; }}
         />
+        <TextField
+          floatingLabelText="Volledige naam"
+          fullWidth
+          ref={(el) => { this.fullName = el; }}
+        />
         <RaisedButton
           style={styles.button}
           label={buttonLabel}
           fullWidth
           primary
-          onClick={this.login}
-          disabled={loggingIn}
+          onClick={this.register}
+          disabled={registering}
         />
-        <Link to="/registreer">
+        <Link to="/login">
           <RaisedButton
             style={styles.button}
-            label="Maak account"
+            label="Ik heb al een account"
             fullWidth
           />
         </Link>
@@ -103,11 +104,7 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
-  authenticateUser: PropTypes.func.isRequired,
-  user: PropTypes.shape({
-    loggingIn: PropTypes.bool,
-  }).isRequired,
+Register.propTypes = {
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

@@ -14,7 +14,7 @@ const UserSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'card',
   }],
-  displayName: String,
+  fullName: String,
 });
 
 UserSchema.pre('save', function hashPassword(next) {

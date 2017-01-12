@@ -6,6 +6,7 @@ import IconButton from 'material-ui/IconButton';
 import IconAdd from 'material-ui/svg-icons/content/add';
 
 import TopBar from '../components/TopBar';
+import BottomNav from '../components/BottomNav';
 import CardToolbar from '../components/CardToolbar';
 
 class Cards extends Component {
@@ -18,6 +19,7 @@ class Cards extends Component {
         />
         <CardToolbar />
         <main></main>
+        <BottomNav />
       </div>
     );
   }

@@ -1229,7 +1229,7 @@
     },
     "react-redux": {
       "version": "5.0.2",
-      "from": "react-redux@>=5.0.1 <6.0.0",
+      "from": "https://registry.npmjs.org/react-redux/-/react-redux-5.0.2.tgz",
       "resolved": "https://registry.npmjs.org/react-redux/-/react-redux-5.0.2.tgz"
     },
     "react-router": {

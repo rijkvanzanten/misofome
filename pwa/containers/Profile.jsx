@@ -5,6 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import IconSettings from 'material-ui/svg-icons/action/settings';
 
 import TopBar from '../components/TopBar';
+import BottomNav from '../components/BottomNav';
 
 const styles = {
   header: {
@@ -47,6 +48,7 @@ class Profile extends Component {
           <h2 style={styles.name}>{this.props.user.username}</h2>
         </header>
         <main />
+        <BottomNav />
       </div>
     );
   }

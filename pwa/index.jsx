@@ -38,7 +38,7 @@ render(
     <Router
       onUpdate={() => window.scrollTo(0, 0)}
       history={browserHistory}
-      routes={routes}
+      routes={routes(store)}
     />
   </Provider>,
   document.getElementById('root'),

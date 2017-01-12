@@ -6,7 +6,7 @@ function requestKey() {
   };
 }
 
-function receiveKey(success, token, username) {
+export function receiveKey(success, token, username) {
   return {
     type: 'RECEIVE_KEY',
     success,
@@ -15,7 +15,7 @@ function receiveKey(success, token, username) {
   };
 }
 
-function authenticateUser(username, password) {
+function authenticateUser(username, password, cb) {
   return (dispatch) => {
     dispatch(requestKey());
 
@@ -27,10 +27,27 @@ function authenticateUser(username, password) {
 
           if (res.body.success) {
             dispatch(receiveKey(true, res.body.token, username));
+            cb(true);
           } else {
             dispatch(receiveKey(false, '', ''));
           }
         });
+  };
+}
+
+export function registerUser(user, cb) {
+  return (dispatch) => {
+    request
+      .post('/api/1/auth/register')
+      .send({ user })
+      .end((err, res) => {
+        if (err) throw err;
+
+        if (res.body.success) {
+          dispatch(receiveKey(true, res.body.token, ''));
+          cb(true);
+        }
+      });
   };
 }
 
