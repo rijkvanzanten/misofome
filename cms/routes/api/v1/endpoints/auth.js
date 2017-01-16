@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const uploadFile = require('../middleware/upload-file');
 const processFile = require('../middleware/process-file');
+const checkToken = require('../middleware/check-token');
 
 const app = require('../../../../index');
 
@@ -66,4 +67,31 @@ router.post('/register', uploadFile, processFile, (req, res) => {
     }
   });
 });
+
+router.put('/update', checkToken, uploadFile, processFile, (req, res) => {
+  const User = mongoose.model('user');
+
+  User.findById(req.user._id, (err, doc) => {
+    if (err) {
+      res.json({
+        success: false,
+        message: err,
+      });
+    }
+
+    Object.assign(doc, req.body);
+
+    doc.save((err, updatedDoc) => {
+      if (err) {
+        res.json({
+          success: false,
+          message: err,
+        });
+      } else {
+        res.send(updatedDoc);
+      }
+    });
+  });
+});
+
 module.exports = router;

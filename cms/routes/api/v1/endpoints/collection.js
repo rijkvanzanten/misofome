@@ -1,13 +1,18 @@
 const express = require('express');
-const fs = require('fs');
 
 const router = express.Router();
 
 const addModelIfExists = require('../middleware/add-model-if-exists');
 const checkToken = require('../middleware/check-token');
-const processFile = require('../middleware/process-file');
 
 router.get('/:model', checkToken, addModelIfExists, (req, res) => {
+  if (res.model.disabled) {
+    return res.json({
+      success: false,
+      message: 'This model can\'t be viewed through this route',
+    });
+  }
+
   // Set search params
   const collection = res.model.find({});
 
@@ -31,7 +36,18 @@ router.get('/:model', checkToken, addModelIfExists, (req, res) => {
 });
 
 router.post('/:model', checkToken, addModelIfExists, (req, res) => {
-  const doc = new res.model(req.body); // eslint-disable-line new-cap
+  if (res.model.disabled) {
+    return res.json({
+      success: false,
+      message: 'This model can\'t be edited through this route',
+    });
+  }
+
+  const dataObj = Object.assign({}, req.body, {
+    user_id: req.user._id, // eslint-disable-line no-underscore-dangle
+  });
+
+  const doc = new res.model(dataObj); // eslint-disable-line new-cap
 
   doc.save((err, record) => {
     res.json({
@@ -42,7 +58,14 @@ router.post('/:model', checkToken, addModelIfExists, (req, res) => {
   });
 });
 
-router.put('/:model/:id', checkToken, addModelIfExists, processFile, (req, res) => {
+router.put('/:model/:id', checkToken, addModelIfExists, (req, res) => {
+  if (res.model.disabled) {
+    return res.json({
+      success: false,
+      message: 'This model can\'t be edited through this route',
+    });
+  }
+
   if (!req.params.id) {
     res.json({
       success: false,
@@ -50,13 +73,30 @@ router.put('/:model/:id', checkToken, addModelIfExists, processFile, (req, res) 
     });
   }
 
-  res.model.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true }, (err, record) => {
+  res.model.findById(req.params.id, (err, doc) => {
     if (err) {
       res.json({
         success: false,
         message: err,
       });
-    } else res.json(record);
+    } else if (res.model.userLock && doc.user_id.toString() !== req.user._id) {
+      res.json({
+        success: false,
+        message: 'Only the creator of this document is allowed to edit',
+      });
+    } else if (res.model.userLock && doc.user_id.toString() === req.user._id) {
+      Object.assign(doc, req.body);
+      doc.save((err, updatedDoc) => {
+        if (err) {
+          res.json({
+            success: false,
+            message: err,
+          });
+        } else {
+          res.json(updatedDoc);
+        }
+      });
+    }
   });
 });
 
