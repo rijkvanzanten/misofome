@@ -31,7 +31,7 @@ chance.mixin({
           stroke="${chance.color()}"
           stroke-width="${point(1, 5)}"
           opacity="${options.opacity}"
-          x1="${point()}" y2="${point()}"
+          x1="${point()}" y1="${point()}"
           x2="${point()}" y2="${point()}"
         />
       `;
@@ -58,7 +58,6 @@ chance.mixin({
           fill="${chance.color()}"
           points="${x},${y} ${x + point(-s, s)},${y + point(-s, s)} ${x + point(-s, s)},${y + point(-s, s)}"
           opacity="${options.opacity}"
-          fill="${chance.color()}"
         />
       `;
     }
@@ -69,6 +68,7 @@ chance.mixin({
 });
 
 router.get('/random-svg', (req, res) => {
+  res.setHeader('Content-Type', 'image/svg+xml');
   res.send(chance.svg({
     lines: 20,
     triangles: 10,

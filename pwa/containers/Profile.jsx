@@ -44,8 +44,8 @@ class Profile extends Component {
           iconElementRight={<IconButton><IconSettings /></IconButton>}
         />
         <header style={styles.header}>
-          <img style={styles.avatar} src="http://placehold.it/500x500" />
-          <h2 style={styles.name}>{this.props.user.username}</h2>
+          <img style={styles.avatar} src={'/' + this.props.user.image.filename} />
+          <h2 style={styles.name}>{this.props.user.fullName}</h2>
         </header>
         <main />
         <BottomNav />
