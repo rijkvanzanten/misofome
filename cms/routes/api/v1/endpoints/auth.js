@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const uploadFile = require('../middleware/upload-file');
+const processFile = require('../middleware/process-file');
 
 const app = require('../../../../index');
 
@@ -42,7 +44,7 @@ router.post('/', (req, res) => {
   });
 });
 
-router.post('/register', (req, res) => {
+router.post('/register', uploadFile, processFile, (req, res) => {
   const User = mongoose.model('user');
 
   if (!req.body) {
@@ -52,7 +54,7 @@ router.post('/register', (req, res) => {
     });
   }
 
-  const newUser = new User(req.body.user);
+  const newUser = new User(req.body);
 
   newUser.save((err, record, numAffected) => {
     const token = jwt.sign(newUser, app.get('secretString'));
