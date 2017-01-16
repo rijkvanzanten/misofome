@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 import AppBar from 'material-ui/AppBar';
 
@@ -13,9 +13,5 @@ const TopBar = props => (
     }}
   />
  );
-
-TopBar.propTypes = {
-  style: PropTypes.object, // eslint-disable-line 
-};
 
 export default TopBar;

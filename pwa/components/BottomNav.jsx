@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { BottomNavigation, BottomNavigationItem } from 'material-ui/BottomNavigation';
 import { withRouter } from 'react-router';
 
@@ -90,12 +90,5 @@ class BottomNav extends Component {
     );
   }
 }
-
-BottomNav.propTypes = {
-  router: PropTypes.shape({
-    location: PropTypes.String,
-    push: PropTypes.Function,
-  }).isRequired,
-};
 
 export default withRouter(BottomNav);

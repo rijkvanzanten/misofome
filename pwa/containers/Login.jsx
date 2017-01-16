@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link, withRouter } from 'react-router';
@@ -102,12 +102,5 @@ class Login extends Component {
     );
   }
 }
-
-Login.propTypes = {
-  authenticateUser: PropTypes.func.isRequired,
-  user: PropTypes.shape({
-    loggingIn: PropTypes.bool,
-  }).isRequired,
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));
