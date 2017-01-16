@@ -19,8 +19,7 @@ function user(state = defaultState, action) {
         ...state,
         loggingIn: false,
         token: action.token,
-        username: action.username,
-        id: action.id,
+        ...action.user,
       };
 
     default:

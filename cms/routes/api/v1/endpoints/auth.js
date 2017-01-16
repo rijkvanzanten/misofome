@@ -32,6 +32,7 @@ router.post('/', (req, res) => {
             success: true,
             message: messages.AUTH_SUCCESS,
             token,
+            user,
           });
         } else {
           res.json({
@@ -47,24 +48,22 @@ router.post('/', (req, res) => {
 router.post('/register', uploadFile, processFile, (req, res) => {
   const User = mongoose.model('user');
 
-  if (!req.body) {
-    res.json({
-      success: false,
-      message: 'User object missing',
-    });
-  }
-
   const newUser = new User(req.body);
 
   newUser.save((err, record, numAffected) => {
-    const token = jwt.sign(newUser, app.get('secretString'));
+    console.log(err);
+    if (err) {
+      res.json({ success: false, message: err });
+    } else {
+      const token = jwt.sign(newUser, app.get('secretString'));
 
-    res.json({
-      success: true,
-      message: 'User created',
-      token,
-      user: record,
-    });
+      res.json({
+        success: true,
+        message: 'User created',
+        token,
+        user: record,
+      });
+    }
   });
 });
 module.exports = router;

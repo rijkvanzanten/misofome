@@ -25,6 +25,7 @@
   "dependencies": {
     "bcrypt": "^1.0.1",
     "body-parser": "^1.15.2",
+    "chance": "^1.0.4",
     "compression": "^1.6.2",
     "crypto": "0.0.3",
     "ejs": "^2.5.5",

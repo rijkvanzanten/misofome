@@ -6,12 +6,12 @@ function requestKey() {
   };
 }
 
-export function receiveKey(success, token, username) {
+export function receiveKey(success, token, user) {
   return {
     type: 'RECEIVE_KEY',
     success,
     token,
-    username,
+    user,
   };
 }
 
@@ -26,7 +26,7 @@ function authenticateUser(username, password, cb) {
           if (err) throw err;
 
           if (res.body.success) {
-            dispatch(receiveKey(true, res.body.token, username));
+            dispatch(receiveKey(true, res.body.token, res.body.user));
             cb(true);
           } else {
             dispatch(receiveKey(false, '', ''));
@@ -39,12 +39,12 @@ export function registerUser(user, cb) {
   return (dispatch) => {
     request
       .post('/api/1/auth/register')
-      .send({ user })
+      .send(user)
       .end((err, res) => {
         if (err) throw err;
 
         if (res.body.success) {
-          dispatch(receiveKey(true, res.body.token, ''));
+          dispatch(receiveKey(true, res.body.token, res.body.user));
           cb(true);
         }
       });

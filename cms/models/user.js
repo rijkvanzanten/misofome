@@ -15,7 +15,12 @@ const UserSchema = mongoose.Schema({
     ref: 'card',
   }],
   fullName: String,
-  image: Object,
+  image: {
+    type: Object,
+    default: {
+      filename: 'random-svg',
+    },
+  },
 });
 
 UserSchema.pre('save', function hashPassword(next) {
