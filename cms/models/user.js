@@ -15,6 +15,7 @@ const UserSchema = mongoose.Schema({
     ref: 'card',
   }],
   fullName: String,
+  image: Object,
 });
 
 UserSchema.pre('save', function hashPassword(next) {
@@ -37,7 +38,7 @@ UserSchema.pre('save', function hashPassword(next) {
 });
 
 // TODO: Password hashen on update bij PUT request
-UserSchema.pre('update', function() {
+UserSchema.pre('update', () => {
 
 });
 
