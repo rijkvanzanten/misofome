@@ -1,26 +1,7 @@
-const multer = require('multer');
-const path = require('path');
-
-const publicPath = path.join(process.cwd(), './uploads');
-
-const acceptedFileTypes = [
-  'image/png',
-  'image/jpeg',
-  'image/pjpeg',
-  'image/gif',
-];
-
-function fileFilter(req, file, cb) {
-  if (acceptedFileTypes.indexOf(file.mimetype) === -1) {
-    cb(null, false);
-  } else {
-    cb(null, true);
+module.exports = (req, res, next) => {
+  if (req.files) {
+    req.body[req.files[0].fieldname] = req.files.length > 1 ? req.files : req.files[0];
   }
-}
 
-const upload = multer({
-  dest: publicPath,
-  fileFilter,
-});
-
-module.exports = upload.any();
+  next();
+};
