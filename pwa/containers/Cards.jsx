@@ -12,6 +12,8 @@ import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
 import CardToolbar from '../components/CardToolbar';
 
+import { createCard } from '../actions/cards';
+
 const styles = {
   imageInput: {
     cursor: 'pointer',
@@ -30,7 +32,7 @@ const styles = {
 };
 
 const mapStateToProps = state => ({ user: state.user });
-
+const mapDispatchToProps = dispatch => bindActionCreators({ createCard }, dispatch);
 class Cards extends Component {
   constructor(props) {
     super(props);
@@ -55,9 +57,13 @@ class Cards extends Component {
   postCard() {
     const formData = new FormData();
 
-    // this.props.postCard(this.props.user.token, formData);
+    formData.append('title', this.cardTitle.input.value);
+    formData.append('content', this.cardContent.input.refs.input.value);
+    formData.append('image', this.cardImage.files[0]);
 
-    this.closeData();
+    this.props.createCard(this.props.user.token, formData);
+
+    this.closeDialog();
   }
 
   render() {
@@ -126,4 +132,4 @@ class Cards extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Cards);
+export default connect(mapStateToProps, mapDispatchToProps)(Cards);

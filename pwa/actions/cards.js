@@ -13,19 +13,36 @@ function receiveCards(cards) {
   };
 }
 
+
 function fetchCards(token) {
   return (dispatch) => {
     dispatch(requestCards());
 
     request
-        .get('/api/1/collection/card')
-        .set('x-access-token', token)
-        .end((err, res) => {
-          if (err) throw err;
-          dispatch(receiveCards(res.body));
-        });
+      .get('/api/1/collection/card')
+      .set('x-access-token', token)
+      .end((err, res) => {
+        if (err) throw err;
+        dispatch(receiveCards(res.body));
+      });
+  };
+}
+
+export function createCard(token, card) {
+  return (dispatch) => {
+    request
+      .post('/api/1/collection/card')
+      .set('x-access-token', token)
+      .send(card)
+      .end((err, res) => {
+        if (err) throw err;
+        if (res.body.success) {
+          dispatch(fetchCards(token));
+        } else {
+          console.error(res.body);
+        }
+      });
   };
 }
 
 export default fetchCards;
-

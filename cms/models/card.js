@@ -8,6 +8,7 @@ const cardSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },
+  image: Object,
 });
 
 const Card = mongoose.model('card', cardSchema);

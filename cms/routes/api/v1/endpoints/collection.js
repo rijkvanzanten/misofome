@@ -4,6 +4,8 @@ const router = express.Router();
 
 const addModelIfExists = require('../middleware/add-model-if-exists');
 const checkToken = require('../middleware/check-token');
+const uploadFile = require('../middleware/upload-file');
+const processFile = require('../middleware/process-file');
 
 router.get('/:model', checkToken, addModelIfExists, (req, res) => {
   if (res.model.disabled) {
@@ -35,13 +37,15 @@ router.get('/:model', checkToken, addModelIfExists, (req, res) => {
   });
 });
 
-router.post('/:model', checkToken, addModelIfExists, (req, res) => {
+router.post('/:model', checkToken, addModelIfExists, uploadFile, processFile, (req, res) => {
   if (res.model.disabled) {
     return res.json({
       success: false,
       message: 'This model can\'t be edited through this route',
     });
   }
+
+  console.log(req.body);
 
   const dataObj = Object.assign({}, req.body, {
     user_id: req.user._id, // eslint-disable-line no-underscore-dangle
