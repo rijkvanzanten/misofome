@@ -15,6 +15,13 @@ export function receiveKey(success, token, user) {
   };
 }
 
+function receiveUpdatedUser(user) {
+  return {
+    type: 'UPDATE_USER',
+    user,
+  };
+}
+
 function authenticateUser(username, password, cb) {
   return (dispatch) => {
     dispatch(requestKey());
@@ -32,6 +39,24 @@ function authenticateUser(username, password, cb) {
             dispatch(receiveKey(false, '', ''));
           }
         });
+  };
+}
+
+export function updateUser(key, user) {
+  return (dispatch) => {
+    request
+      .put('/api/1/auth/update')
+      .set('x-access-token', key)
+      .send(user)
+      .end((err, res) => {
+        if (err) throw err;
+
+        if (res.body.success) {
+          dispatch(receiveUpdatedUser(res.body.user));
+        } else {
+          console.error(res.body);
+        }
+      });
   };
 }
 

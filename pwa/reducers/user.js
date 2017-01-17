@@ -22,6 +22,12 @@ function user(state = defaultState, action) {
         ...action.user,
       };
 
+    case 'UPDATE_USER':
+      return {
+        ...state,
+        ...action.user,
+      };
+
     default:
       return state;
   }

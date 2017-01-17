@@ -80,7 +80,7 @@ router.put('/update', checkToken, uploadFile, processFile, (req, res) => {
     }
 
     Object.assign(doc, req.body);
-
+    console.log(doc);
     doc.save((err, updatedDoc) => {
       if (err) {
         res.json({
@@ -88,7 +88,10 @@ router.put('/update', checkToken, uploadFile, processFile, (req, res) => {
           message: err,
         });
       } else {
-        res.send(updatedDoc);
+        res.json({
+          success: true,
+          user: updatedDoc,
+        });
       }
     });
   });

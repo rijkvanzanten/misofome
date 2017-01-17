@@ -23,6 +23,11 @@ app.use(express.static(path.join(__dirname, 'static'), {
   maxage: 604800000,
 }));
 
+app.use(express.static(path.join(__dirname, 'uploads'), {
+  index: false,
+  maxage: 604800000,
+}));
+
 app.use(require('./cms'));
 
 app.use('*', (req, res) => {

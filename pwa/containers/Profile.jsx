@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import IconButton from 'material-ui/IconButton';
 import IconSettings from 'material-ui/svg-icons/action/settings';
@@ -10,6 +11,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
+
+import { updateUser } from '../actions/user';
 
 const styles = {
   header: {
@@ -52,6 +55,7 @@ const styles = {
 };
 
 const mapStateToProps = state => ({ user: state.user });
+const mapDispatchToProps = dispatch => bindActionCreators({ updateUser }, dispatch);
 
 class Profile extends Component {
   constructor(props) {
@@ -74,7 +78,12 @@ class Profile extends Component {
   }
 
   saveSettings() {
-    console.log(this.settingsName.input.value, this.settingsImage.files[0]);
+    const formData = new FormData();
+
+    formData.append('user', this.settingsName.input.value);
+    formData.append('image', this.settingsImage.files[0]);
+    this.props.updateUser(this.props.user.token, formData);
+
     this.closeDialog();
   }
 
@@ -141,4 +150,4 @@ class Profile extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
