@@ -45,8 +45,6 @@ router.post('/:model', checkToken, addModelIfExists, uploadFile, processFile, (r
     });
   }
 
-  console.log(req.body);
-
   const dataObj = Object.assign({}, req.body, {
     user: req.user._id, // eslint-disable-line no-underscore-dangle
   });
