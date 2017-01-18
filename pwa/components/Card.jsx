@@ -42,6 +42,10 @@ class Card extends Component {
       this.props.updateUser(this.props.user.token, {
         favorites: update(this.props.user.favorites, { $splice: [[this.props.data._id, 1]] })
       });
+
+      if(this.props.openSnackbar) {
+        this.props.openSnackbar(this.props.data);
+      }
     }
 
     this.setState({ favorite: !this.state.favorite });
