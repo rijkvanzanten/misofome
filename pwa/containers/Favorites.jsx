@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import FlipMove from 'react-flip-move';
 
 import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
@@ -20,13 +21,15 @@ class Favorites extends Component {
       <div>
         <TopBar title="Favorieten" />
         <main>
-          {this.props.user.favorites.map(id =>
-            <Card
-              data={this.props.cards[id]}
-              key={id}
-              favorite={true}
-            />
-          )}
+          <FlipMove>
+            {this.props.user.favorites.map(id =>
+              <Card
+                data={this.props.cards[id]}
+                key={id}
+                favorite={true}
+              />
+            )}
+          </FlipMove>
         </main>
         <BottomNav />
       </div>

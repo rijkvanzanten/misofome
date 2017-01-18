@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import FlipMove from 'react-flip-move';
 
 import IconButton from 'material-ui/IconButton';
 import IconAdd from 'material-ui/svg-icons/content/add';
@@ -106,13 +107,15 @@ class Cards extends Component {
         />
         <CardToolbar />
         <main>
-          {cards.map(card =>
-            <Card
-              data={card}
-              key={card._id}
-              favorite={this.props.user.favorites.indexOf(card._id) !== -1}
-            />,
-          )}
+          <FlipMove>
+            {cards.map(card =>
+              <Card
+                data={card}
+                key={card._id}
+                favorite={this.props.user.favorites.indexOf(card._id) !== -1}
+              />,
+            )}
+          </FlipMove>
         </main>
         <BottomNav />
         <Dialog

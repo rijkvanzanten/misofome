@@ -55,9 +55,15 @@ class Card extends Component {
           avatar={this.props.data.user.image.filename}
           subtitle={moment(this.props.data.createdAt).fromNow()}
         />
-        <CardMedia>
-          <img alt={this.props.data.title} src={this.props.data.image.filename} />
-        </CardMedia>
+
+        {
+          this.props.data.image ?
+          <CardMedia>
+            <img alt={this.props.data.title} src={this.props.data.image.filename} />
+          </CardMedia> :
+          null
+        }
+
         <CardTitle title={this.props.data.title} />
         <CardText>
           {this.props.data.content}
