@@ -1,18 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
+
 import AppBar from 'material-ui/AppBar';
 
-class TopBar extends Component {
-  render() {
-    return (
-      <AppBar
-        {...this.props}
-        showMenuIconButton={false}
-        style={Object.assign({}, {
-          position: 'fixed',
-          top: 0
-        }, this.props.style || {})}/>
-    );
-  }
-}
+const TopBar = props => (
+  <AppBar
+    {...props}
+    showMenuIconButton={false}
+    style={{
+      position: 'fixed',
+      top: 0,
+      ...props.style || {},
+    }}
+  />
+ );
 
 export default TopBar;

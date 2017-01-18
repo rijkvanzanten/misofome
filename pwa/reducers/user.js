@@ -1,14 +1,17 @@
 const defaultState = {
   token: '',
-  loggingIn: false
+  loggingIn: false,
+  id: '',
+  username: '',
+  favorites: [],
 };
 
-const user = function(state = defaultState, action) {
-  switch(action.type) {
+function user(state = defaultState, action) {
+  switch (action.type) {
     case 'REQUEST_KEY':
       return {
         ...state,
-        loggingIn: true
+        loggingIn: true,
       };
 
     case 'RECEIVE_KEY':
@@ -16,12 +19,18 @@ const user = function(state = defaultState, action) {
         ...state,
         loggingIn: false,
         token: action.token,
-        username: action.username
+        ...action.user,
+      };
+
+    case 'UPDATE_USER':
+      return {
+        ...state,
+        ...action.user,
       };
 
     default:
       return state;
   }
-};
+}
 
 export default user;

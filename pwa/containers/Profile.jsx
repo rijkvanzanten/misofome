@@ -1,43 +1,23 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import IconButton from 'material-ui/IconButton';
 import IconSettings from 'material-ui/svg-icons/action/settings';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import TopBar from '../components/TopBar';
-import ExerciseCard from '../components/ExerciseCard';
+import BottomNav from '../components/BottomNav';
 
-class Profile extends Component {
-  render() {
-    return (
-      <div>
-        <TopBar
-          title="Profiel"
-          iconElementRight={<IconButton><IconSettings /></IconButton>} />
-        <header style={styles.header}>
-          <img style={styles.avatar} src="http://placehold.it/500x500" />
-          <h2 style={styles.name}>Harold</h2>
-        </header>
-        <main style={styles.main}>
-          <ExerciseCard
-            title="Ontspanningsoefening"
-            user="Rijk van Zanten"
-            description="Oefening die gemaakt is door de huidige user"
-            imgUrl="http://placehold.it/400x200"
-            comments={[
-              {
-                user: 'Rijk',
-                comment: 'hoi'
-              }
-            ]}/>
-        </main>
-      </div>
-    );
-  }
-}
+import { updateUser } from '../actions/user';
 
 const styles = {
   header: {
     position: 'relative',
-    height: '70vw'
+    height: '70vw',
   },
   avatar: {
     position: 'absolute',
@@ -56,16 +36,118 @@ const styles = {
     left: '20px',
     bottom: '20px',
     margin: 0,
-    textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+    textShadow: '0 1px 2px rgba(0,0,0,0.5)',
   },
-  main: {
-    backgroundColor: '#f6f6f6',
-    paddingTop: '10px',
-    paddingBottom: '20px'
+  imageInput: {
+    cursor: 'pointer',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    width: '100%',
+    opacity: 0,
+    zIndex: 10,
   },
-  card: {
-    margin: '10px'
-  }
+  fileButton: {
+    marginTop: '35px',
+  },
 };
 
-export default Profile;
+const mapStateToProps = state => ({ user: state.user });
+const mapDispatchToProps = dispatch => bindActionCreators({ updateUser }, dispatch);
+
+class Profile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      settingsOpen: false,
+    };
+
+    this.openDialog = this.openDialog.bind(this);
+    this.closeDialog = this.closeDialog.bind(this);
+    this.saveSettings = this.saveSettings.bind(this);
+  }
+
+  openDialog() {
+    this.setState({ settingsOpen: true });
+  }
+
+  closeDialog() {
+    this.setState({ settingsOpen: false });
+  }
+
+  saveSettings() {
+    const formData = new FormData();
+
+    formData.append('user', this.settingsName.input.value);
+    formData.append('image', this.settingsImage.files[0]);
+    this.props.updateUser(this.props.user.token, formData);
+
+    this.closeDialog();
+  }
+
+  render() {
+    const actions = [
+      <FlatButton
+        label="Annuleer"
+        primary
+        onTouchTap={this.closeDialog}
+      />,
+      <FlatButton
+        label="Sla op"
+        primary
+        keyboardFocused
+        onTouchTap={this.saveSettings}
+      />,
+    ];
+
+    return (
+      <div>
+        <TopBar
+          title="Profiel"
+          iconElementRight={(
+            <IconButton
+              onTouchTap={this.openDialog}
+            >
+              <IconSettings />
+            </IconButton>
+          )}
+        />
+        <header style={styles.header}>
+          <img style={styles.avatar} src={`/${this.props.user.image.filename}`} />
+          <h2 style={styles.name}>{this.props.user.fullName}</h2>
+        </header>
+        <main />
+        <BottomNav />
+        <Dialog
+          title="Profiel instellingen"
+          actions={actions}
+          modal={false}
+          open={this.state.settingsOpen}
+          onRequestClose={this.closeDialog}
+        >
+          <TextField
+            defaultValue={this.props.user.fullName}
+            floatingLabelText="Naam"
+            ref={(el) => { this.settingsName = el; }}
+          />
+          <RaisedButton
+            label="Upload profielfoto"
+            fullWidth
+            secondary
+            style={styles.fileButton}
+          >
+            <input
+              type="file"
+              style={styles.imageInput}
+              ref={(el) => { this.settingsImage = el; }}
+            />
+          </RaisedButton>
+        </Dialog>
+      </div>
+    );
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

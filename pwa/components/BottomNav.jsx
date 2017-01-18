@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BottomNavigation, BottomNavigationItem} from 'material-ui/BottomNavigation';
+import { BottomNavigation, BottomNavigationItem } from 'material-ui/BottomNavigation';
 import { withRouter } from 'react-router';
 
 import IconAccount from 'material-ui/svg-icons/action/account-circle';
@@ -8,14 +8,39 @@ import IconFavorite from 'material-ui/svg-icons/action/favorite';
 import IconChart from 'material-ui/svg-icons/editor/show-chart';
 
 class BottomNav extends Component {
-  state = {
-    selectedIndex: 0,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedIndex: 0,
+    };
+  }
+
+  // Set tabbar to correct tab when opening app
+  componentWillMount() {
+    const { pathname } = this.props.router.location;
+    switch (pathname) {
+      case '/':
+        this.setState({ selectedIndex: 0 });
+        break;
+      case '/kaarten':
+        this.setState({ selectedIndex: 1 });
+        break;
+      case '/voortgang':
+        this.setState({ selectedIndex: 2 });
+        break;
+      case '/profiel':
+        this.setState({ selectedIndex: 3 });
+        break;
+      default:
+        break;
+    }
+  }
 
   select(num) {
     const { push } = this.props.router;
 
-    switch(num) {
+    switch (num) {
       case 0:
         push('/');
         break;
@@ -28,35 +53,19 @@ class BottomNav extends Component {
       case 3:
         push('/profiel');
         break;
-    }
-
-    this.setState({selectedIndex: num});
-  }
-
-  // Set tabbar to correct tab when opening app
-  componentWillMount() {
-    const { pathname } = this.props.router.location;
-    switch(pathname) {
-      case '/':
-        this.setState({selectedIndex: 0});
-        break;
-      case '/kaarten':
-        this.setState({selectedIndex: 1});
-        break;
-      case '/voortgang':
-        this.setState({selectedIndex: 2});
-        break;
-      case '/profiel':
-        this.setState({selectedIndex: 3});
+      default:
         break;
     }
+
+    this.setState({ selectedIndex: num });
   }
 
   render() {
     return (
       <BottomNavigation
         selectedIndex={this.state.selectedIndex}
-        style={{position: 'fixed', bottom: 0, borderTop: '1.5px solid #f4f4f4'}}>
+        style={{ position: 'fixed', bottom: 0, borderTop: '1.5px solid #f4f4f4' }}
+      >
         <BottomNavigationItem
           label="Favorieten"
           icon={<IconFavorite />}

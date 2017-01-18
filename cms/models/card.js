@@ -6,10 +6,15 @@ const cardSchema = mongoose.Schema({
   category: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
-  }
+    ref: 'user',
+  },
+  image: Object,
+}, {
+  timestamps: true,
 });
 
 const Card = mongoose.model('card', cardSchema);
+
+Card.userLock = true;
 
 module.exports = Card;
