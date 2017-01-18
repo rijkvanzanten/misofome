@@ -27,7 +27,7 @@ function authenticateUser(username, password, cb) {
     dispatch(requestKey());
 
     request
-        .post('/api/1/auth')
+        .post('/api/1/user/login')
         .send({ username, password })
         .end((err, res) => {
           if (err) throw err;
@@ -45,7 +45,7 @@ function authenticateUser(username, password, cb) {
 export function updateUser(key, user) {
   return (dispatch) => {
     request
-      .put('/api/1/auth/update')
+      .put('/api/1/user')
       .set('x-access-token', key)
       .send(user)
       .end((err, res) => {
@@ -63,7 +63,7 @@ export function updateUser(key, user) {
 export function registerUser(user, cb) {
   return (dispatch) => {
     request
-      .post('/api/1/auth/register')
+      .post('/api/1/user')
       .send(user)
       .end((err, res) => {
         if (err) throw err;
