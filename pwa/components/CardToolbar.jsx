@@ -51,6 +51,7 @@ class CardToolbar extends Component {
               </IconButton>
             }
           >
+            <MenuItem primaryText="Nieuwste" />
             <MenuItem primaryText="Alfabetisch" />
             <MenuItem primaryText="Populairst" />
           </IconMenu>
@@ -61,4 +62,3 @@ class CardToolbar extends Component {
 }
 
 export default CardToolbar;
-

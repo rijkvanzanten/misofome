@@ -80,8 +80,8 @@ class Profile extends Component {
   saveSettings() {
     const formData = new FormData();
 
-    formData.append('user', this.settingsName.input.value);
-    formData.append('image', this.settingsImage.files[0]);
+    formData.append('fullName', this.settingsName.input.value);
+    if(this.settingsImage.files) formData.append('image', this.settingsImage.files[0]);
     this.props.updateUser(this.props.user.token, formData);
 
     this.closeDialog();

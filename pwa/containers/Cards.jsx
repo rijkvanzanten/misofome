@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import FlipMove from 'react-flip-move';
 
 import IconButton from 'material-ui/IconButton';
 import IconAdd from 'material-ui/svg-icons/content/add';
@@ -88,6 +89,12 @@ class Cards extends Component {
       />,
     ];
 
+    const cards = Object.keys(this.props.cards)
+      .map(key => this.props.cards[key])
+      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
+    const favoritesIDs = this.props.user.favorites.map(card => card._id);
+
     return (
       <div>
         <TopBar
@@ -102,8 +109,15 @@ class Cards extends Component {
         />
         <CardToolbar />
         <main>
-          {Object.keys(this.props.cards).map(key =>
-            <Card data={this.props.cards[key]} key={key} />)}
+          <FlipMove>
+            {cards.map(card =>
+              <Card
+                card={card}
+                key={card._id}
+                favorite={favoritesIDs.indexOf(card._id) !== -1}
+              />,
+            )}
+          </FlipMove>
         </main>
         <BottomNav />
         <Dialog
