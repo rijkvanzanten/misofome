@@ -4,7 +4,7 @@ const cardSchema = mongoose.Schema({
   title: String,
   content: String,
   category: String,
-  user_id: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },
