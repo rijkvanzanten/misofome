@@ -91,7 +91,7 @@ class Cards extends Component {
 
     const cards = Object.keys(this.props.cards)
       .map(key => this.props.cards[key])
-      .sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt));
+      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
     return (
       <div>
