@@ -102,7 +102,8 @@ class Cards extends Component {
         />
         <CardToolbar />
         <main>
-          {this.props.cards.map((d, i) => <Card data={d} key={d._id} />)}
+          {Object.keys(this.props.cards).map(key =>
+            <Card data={this.props.cards[key]} key={key} />)}
         </main>
         <BottomNav />
         <Dialog
