@@ -33,6 +33,7 @@
     "jsonwebtoken": "^7.2.1",
     "localforage": "^1.4.3",
     "material-ui": "^0.16.5",
+    "moment": "https://registry.npmjs.org/moment/-/moment-2.17.1.tgz",
     "mongoose": "^4.7.4",
     "morgan": "^1.7.0",
     "multer": "^1.2.1",

@@ -8,11 +8,13 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+
 import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
 import CardToolbar from '../components/CardToolbar';
+import Card from '../components/Card';
 
-import { createCard } from '../actions/cards';
+import { createCard, fetchCards } from '../actions/cards';
 
 const styles = {
   imageInput: {
@@ -31,8 +33,8 @@ const styles = {
   },
 };
 
-const mapStateToProps = state => ({ user: state.user });
-const mapDispatchToProps = dispatch => bindActionCreators({ createCard }, dispatch);
+const mapStateToProps = state => ({ user: state.user, cards: state.cards });
+const mapDispatchToProps = dispatch => bindActionCreators({ createCard, fetchCards }, dispatch);
 class Cards extends Component {
   constructor(props) {
     super(props);
@@ -44,6 +46,10 @@ class Cards extends Component {
     this.openDialog = this.openDialog.bind(this);
     this.closeDialog = this.closeDialog.bind(this);
     this.postCard = this.postCard.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.fetchCards(this.props.user.token);
   }
 
   openDialog() {
@@ -58,8 +64,9 @@ class Cards extends Component {
     const formData = new FormData();
 
     formData.append('title', this.cardTitle.input.value);
-    formData.append('content', this.cardContent.input.refs.input.value);
-    formData.append('image', this.cardImage.files[0]);
+
+    if (this.cardContent.input.refs.input.value) formData.append('content', this.cardContent.input.refs.input.value);
+    if (this.cardImage.files[0]) formData.append('image', this.cardImage.files[0]);
 
     this.props.createCard(this.props.user.token, formData);
 
@@ -94,7 +101,9 @@ class Cards extends Component {
           )}
         />
         <CardToolbar />
-        <main />
+        <main>
+          {this.props.cards.map((d, i) => <Card data={d} key={d._id} />)}
+        </main>
         <BottomNav />
         <Dialog
           title="Nieuwe Kaart"

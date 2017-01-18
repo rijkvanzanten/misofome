@@ -13,13 +13,12 @@ function receiveCards(cards) {
   };
 }
 
-
-function fetchCards(token) {
+export function fetchCards(token) {
   return (dispatch) => {
     dispatch(requestCards());
 
     request
-      .get('/api/1/collection/card')
+      .get('/api/1/collection/card?populate=user')
       .set('x-access-token', token)
       .end((err, res) => {
         if (err) throw err;
