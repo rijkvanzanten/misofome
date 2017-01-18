@@ -11,7 +11,7 @@ const messages = require('../messages');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
+router.post('/login', (req, res) => {
   const User = mongoose.model('user');
 
   User.findOne({ username: req.body.username }, (err, user) => {
@@ -46,7 +46,7 @@ router.post('/', (req, res) => {
   });
 });
 
-router.post('/register', uploadFile, processFile, (req, res) => {
+router.post('/', uploadFile, processFile, (req, res) => {
   const User = mongoose.model('user');
 
   const newUser = new User(req.body);
@@ -68,7 +68,7 @@ router.post('/register', uploadFile, processFile, (req, res) => {
   });
 });
 
-router.put('/update', checkToken, uploadFile, processFile, (req, res) => {
+router.put('/', checkToken, uploadFile, processFile, (req, res) => {
   const User = mongoose.model('user');
 
   User.findById(req.user._id, (err, doc) => {
