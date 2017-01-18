@@ -90,7 +90,7 @@ router.put('/', checkToken, uploadFile, processFile, (req, res) => {
       Object.assign(doc, req.body);
 
       doc.save((err, updatedDoc) => {
-        User.findOne(updatedDoc)
+        User.findById(req.user._id)
           .populate({
             path: 'favorites',
             populate: {
