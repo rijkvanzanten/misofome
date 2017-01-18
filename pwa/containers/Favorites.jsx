@@ -42,14 +42,10 @@ class Favorites extends Component {
 
   undoRemoveFromFavorites() {
     this.props.updateUser(this.props.user.token, {
-      favorites: update(this.props.user.favorites, { $push: [this.state.snackbarCard._id] })
+      favorites: update(this.props.user.favorites, { $push: [this.state.snackbarCard] })
     });
 
     this.closeSnackbar();
-  }
-
-  componentDidMount() {
-    this.props.fetchCards(this.props.user.token);
   }
 
   render() {
@@ -58,10 +54,10 @@ class Favorites extends Component {
         <TopBar title="Favorieten" />
         <main>
           <FlipMove>
-            {this.props.user.favorites.map(id =>
+            {this.props.user.favorites.map(card =>
               <Card
-                data={this.props.cards[id]}
-                key={id}
+                card={card}
+                key={card._id}
                 favorite={true}
                 openSnackbar={this.openSnackbar}
               />

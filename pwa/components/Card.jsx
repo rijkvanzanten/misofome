@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import update from 'immutability-helper';
 
 import { Card as CardContainer, CardHeader, CardMedia, CardText, CardTitle, CardActions } from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
@@ -34,17 +33,19 @@ class Card extends Component {
   }
 
   toggleFavorite() {
+    const { card, user } = this.props;
+
     if(!this.state.favorite) {
-      this.props.updateUser(this.props.user.token, {
-        favorites: update(this.props.user.favorites, { $push: [this.props.data._id] })
+      this.props.updateUser(user.token, {
+        favorites: [...user.favorites.map(card => card._id), card._id]
       });
     } else {
-      this.props.updateUser(this.props.user.token, {
-        favorites: update(this.props.user.favorites, { $splice: [[this.props.data._id, 1]] })
+      this.props.updateUser(user.token, {
+        favorites: [...user.favorites.map(card => card._id).filter(id => id !== card._id)]
       });
 
       if(this.props.openSnackbar) {
-        this.props.openSnackbar(this.props.data);
+        this.props.openSnackbar(this.props.card);
       }
     }
 
@@ -52,25 +53,27 @@ class Card extends Component {
   }
 
   render() {
+    const { card } = this.props;
+
     return (
       <CardContainer style={styles.CardContainer}>
         <CardHeader
-          title={this.props.data.user.fullName}
-          avatar={this.props.data.user.image.filename}
-          subtitle={moment(this.props.data.createdAt).fromNow()}
+          title={card.user.fullName}
+          avatar={card.user.image.filename}
+          subtitle={moment(card.createdAt).fromNow()}
         />
 
         {
-          this.props.data.image ?
+          card.image ?
           <CardMedia>
-            <img alt={this.props.data.title} src={this.props.data.image.filename} />
+            <img alt={card.title} src={card.image.filename} />
           </CardMedia> :
           null
         }
 
-        <CardTitle title={this.props.data.title} />
+        <CardTitle title={card.title} />
         <CardText>
-          {this.props.data.content}
+          {card.content}
         </CardText>
         <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
           <IconButton

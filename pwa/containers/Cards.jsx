@@ -93,6 +93,8 @@ class Cards extends Component {
       .map(key => this.props.cards[key])
       .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
+    const favoritesIDs = this.props.user.favorites.map(card => card._id);
+
     return (
       <div>
         <TopBar
@@ -110,9 +112,9 @@ class Cards extends Component {
           <FlipMove>
             {cards.map(card =>
               <Card
-                data={card}
+                card={card}
                 key={card._id}
-                favorite={this.props.user.favorites.indexOf(card._id) !== -1}
+                favorite={favoritesIDs.indexOf(card._id) !== -1}
               />,
             )}
           </FlipMove>
