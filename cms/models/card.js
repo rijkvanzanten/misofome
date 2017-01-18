@@ -9,6 +9,8 @@ const cardSchema = mongoose.Schema({
     ref: 'user',
   },
   image: Object,
+}, {
+  timestamps: true,
 });
 
 const Card = mongoose.model('card', cardSchema);
