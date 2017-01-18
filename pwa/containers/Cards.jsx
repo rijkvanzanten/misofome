@@ -88,6 +88,10 @@ class Cards extends Component {
       />,
     ];
 
+    const cards = Object.keys(this.props.cards)
+      .map(key => this.props.cards[key])
+      .sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt));
+
     return (
       <div>
         <TopBar
@@ -102,8 +106,13 @@ class Cards extends Component {
         />
         <CardToolbar />
         <main>
-          {Object.keys(this.props.cards).map(key =>
-            <Card data={this.props.cards[key]} key={key} />)}
+          {cards.map(card =>
+            <Card
+              data={card}
+              key={card._id}
+              favorite={this.props.user.favorites.indexOf(card._id) !== -1}
+            />,
+          )}
         </main>
         <BottomNav />
         <Dialog
