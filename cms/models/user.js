@@ -21,6 +21,7 @@ const UserSchema = mongoose.Schema({
       filename: 'random-svg',
     },
   },
+  amisosResults: Array,
 });
 
 UserSchema.pre('save', function hashPassword(next) {
