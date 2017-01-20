@@ -99,6 +99,43 @@ router.post('/', uploadFile, processFile, (req, res) => {
 });
 
 // Update existing user
-router.put('/');
+router.put('/', checkToken, uploadFile, processFile, (req, res) => {
+  const User = mongoose.model('user');
+
+  User.findById(req.user._id)
+    .exec((err, doc) => {
+      if (err) {
+        res.json({
+          success: false,
+          message: err,
+        });
+      }
+
+      Object.assign(doc, req.body);
+
+      doc.save((err, updatedDoc) => {
+        User.findById(req.user._id)
+          .populate({
+            path: 'favorites',
+            populate: {
+              path: 'user'
+            }
+          })
+          .exec((err, doc) => {
+            if (err) {
+              res.json({
+                success: false,
+                message: err,
+              });
+            } else {
+              res.json({
+                success: true,
+                user: doc,
+              });
+            }
+          });
+      });
+    });
+  });
 
 module.exports = router;

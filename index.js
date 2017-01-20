@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'uploads'), {
   maxage: 604800000,
 }));
 
-app.use(require('./cms'));
+app.use(require('./backend'));
 
 app.use('*', (req, res) => {
   if (!dev) res.sendFile(path.join(__dirname, 'dist', 'index.html'));
