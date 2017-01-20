@@ -1,0 +1,294 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Introduction · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-theme-api/theme-api.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="ENDPOINTS.html" />
+    
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter active" data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">User</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="ENDPOINTS.html">
+            
+                <a href="ENDPOINTS.html#user-login">
+            
+                    
+                    Login
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="user/create.md">
+            
+                <span>
+            
+                    
+                    New User
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >Introduction</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="misofome-api-reference">Misofome API Reference</h1>
+<p>This documentation is intended to get you up and running with the current version of the Misofome API. We&#x2019;ll cover everything you need to know, from authentication, to manipulating results.  </p>
+<p>The REST API provides programmatic access to read and write Misofome&apos;s data. List cards, edit users, and more. The REST API identifies users using json webtokens; responses are available in JSON.</p>
+<p>All JavaScript examples use the <a href="https://github.com/visionmedia/superagent" target="_blank">superagent</a> library for HTTP requests to be easily readable.</p>
+<h1 id="schema">Schema</h1>
+<p>All API access is accessed through <a href="http://example.com/api/" target="_blank">http://example.com/api/</a>. All data is sent and received as JSON.</p>
+<h1 id="install">Install</h1>
+<p>The first thing is to clone the <a href="https://github.com/RijkvanZanten/misofome" target="_blank">Misofome repo</a></p>
+<pre><code class="lang-bash">$ git <span class="hljs-built_in">clone</span> https://github.com/RijkvanZanten/misofome.git
+</code></pre>
+<p>Install node_modules with</p>
+<pre><code class="lang-bash">$ npm install
+</code></pre>
+<p>The API can be started by starting the whole app in production mode with</p>
+<pre><code class="lang-bash">$ npm start
+</code></pre>
+<p>You could also start the app in development mode (with autoreloading) with</p>
+<pre><code class="lang-bash">$ npm run dev
+</code></pre>
+<p>If you want to develop just the api, start the app with <code>npm run dev:api</code>. This way, the app will skip launching the webpack building of the frontend, which saves on building time when editing the API.</p>
+<div class="api-method"><div class="api-method-definition"><h1 id="authentication">Authentication </h1>
+<p>Most routes require you to authenticate by providing an access-token in the HTTP-headers.</p>
+<p>See the <code>/user/</code> endpoints section of this documentation on how to receive this authentication token.</p>
+</div><div class="api-method-code"><div class="api-method-example"><p>Example request to /collection/cards</p>
+</div><div class="api-method-sample" data-lang="http" data-name="HTTP"><pre><code class="lang-bash">$ curl -H <span class="hljs-string">&quot;x-access-token: eyJhbG...&quot;</span> http://localhost:3000/api/collection/cards/
+</code></pre>
+</div><div class="api-method-sample" data-lang="js" data-name="JavaScript"><pre><code class="lang-js">request
+  .get(<span class="hljs-string">&apos;http://localhost:3000/api/collection/cards/&apos;</span>)
+  .set(<span class="hljs-string">&apos;x-access-token&apos;</span>, <span class="hljs-string">&apos;eyJhbG...&apos;</span>)
+  .send();
+</code></pre>
+</div></div></div>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"1.1","depth":1,"next":{"title":"Login","level":"2.1","depth":1,"anchor":"#user-login","path":"ENDPOINTS.md","ref":"ENDPOINTS.md#user-login","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["theme-api","livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-api":{"languages":[],"split":true,"theme":"light"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2017-01-20T16:12:10.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-01-20T16:13:45.486Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-theme-api/theme-api.js"></script>
+        
+    
+
+    </body>
+</html>
+
