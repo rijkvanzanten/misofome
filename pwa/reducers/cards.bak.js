@@ -14,13 +14,6 @@ function cards(state = defaultState, action) {
       return newState;
     }
 
-    case 'ADD_CARD': {
-      return {
-        ...state,
-        [action.card._id]: action.card,
-      };
-    }
-
     default: {
       return state;
     }

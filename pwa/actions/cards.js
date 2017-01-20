@@ -1,47 +1,44 @@
 import request from 'superagent';
 
-function requestCards() {
+/**
+ * Haal 10 kaarten op van user
+ *
+ * Haal 10 kaarten op:
+ *  recent
+ *  alfabetisch
+ *
+ * Haal favoriete kaarten op
+ *
+ * Maak nieuwe kaart
+ */
+
+// Get cards
+// -----------------------------------------------------------------------------
+
+
+
+
+
+// Create new card
+// -----------------------------------------------------------------------------
+function addNewCard(card) {
   return {
-    type: 'REQUEST_CARDS',
-  };
-}
-
-function receiveCards(cards) {
-  return {
-    type: 'RECEIVE_CARDS',
-    cards,
-  };
-}
-
-export function fetchCards(token) {
-  return (dispatch) => {
-    dispatch(requestCards());
-
-    request
-      .get('/api/1/collection/card?populate=user')
-      .set('x-access-token', token)
-      .end((err, res) => {
-        if (err) throw err;
-        dispatch(receiveCards(res.body));
-      });
+    type: 'ADD_CARD',
+    card,
   };
 }
 
 export function createCard(token, card) {
-  return (dispatch) => {
+  return dispatch => {
+    dispatch(addNewCard(card));
+
     request
-      .post('/api/1/collection/card')
+      .post('/api/collection/card')
       .set('x-access-token', token)
       .send(card)
       .end((err, res) => {
-        if (err) throw err;
-        if (res.body.success) {
-          dispatch(fetchCards(token));
-        } else {
-          console.error(res.body);
-        }
+        if(err) throw err;
+        if(res.success) throw res.message;
       });
   };
 }
-
-export default fetchCards;
