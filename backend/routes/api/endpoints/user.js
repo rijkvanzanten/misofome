@@ -22,7 +22,7 @@ router.post('/login', (req, res) => {
       // Something fails in database
       if(err) {
         console.log(err);
-        res.status(500).end();
+        return res.status(500).end();
       }
 
       // User wasn't found
@@ -77,7 +77,6 @@ router.post('/', uploadFile, processFile, (req, res) => {
   // Save user to DB
   newUser.save((err, user) => {
     // Delete password property of user object
-    console.log(user);
     user.password = undefined;
 
     // Username already exists
@@ -102,40 +101,40 @@ router.post('/', uploadFile, processFile, (req, res) => {
 router.put('/', checkToken, uploadFile, processFile, (req, res) => {
   const User = mongoose.model('user');
 
-  User.findById(req.user._id)
-    .exec((err, doc) => {
-      if (err) {
-        res.json({
-          success: false,
-          message: err,
-        });
+  // Find user in database
+  User.findById(req.userID)
+    .exec((err, user) => {
+      // Something fails in database
+      if(err) {
+        console.log(err);
+        return res.status(500).end();
       }
 
-      Object.assign(doc, req.body);
+      // User wasn't found
+      if(!user) return res.status(409).end();
 
-      doc.save((err, updatedDoc) => {
-        User.findById(req.user._id)
-          .populate({
-            path: 'favorites',
-            populate: {
-              path: 'user'
-            }
-          })
-          .exec((err, doc) => {
-            if (err) {
-              res.json({
-                success: false,
-                message: err,
-              });
-            } else {
-              res.json({
-                success: true,
-                user: doc,
-              });
-            }
-          });
+      // Add body data to found user
+      Object.assign(user, req.body);
+
+      user.save((err, user) => {
+        // Delete password property of user object
+        console.log(user);
+        user.password = undefined;
+
+        // Username already exists
+        if(err && err.code === 11000) {
+          return res.status(409).end();
+        }
+
+        // Something else failed in the DB
+        if(err && err.code !== 11000) {
+          console.log(err);
+          return res.status(500).end();
+        }
+
+        return res.status(200).json({ user });
       });
     });
-  });
+});
 
 module.exports = router;
