@@ -28,7 +28,14 @@ const UserSchema = mongoose.Schema({
   amisosResults: Array,
 });
 
-UserSchema.pre('save', function hashPassword(next) {
+// Set fullName key to be username by default
+UserSchema.pre('save', function (next) {
+  this.fullName = this.get('username');
+  next();
+});
+
+// Hash password on save
+UserSchema.pre('save', function (next) {
   // Only hash the password if it has been modified
   if (!this.isModified('password')) return next();
 
@@ -47,11 +54,12 @@ UserSchema.pre('save', function hashPassword(next) {
   });
 });
 
-// TODO: Password hashen on update bij PUT request
+// TODO: Hash password on update (PUT)
 UserSchema.pre('update', () => {
 
 });
 
+// Set comparePassword method on user model
 UserSchema.methods.comparePassword = function comparePassword(candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
     if (err) return callback(err);
