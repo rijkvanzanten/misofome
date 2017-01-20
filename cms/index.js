@@ -42,9 +42,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Set 'master' routes for api and admin
-app.use('/admin', require('./routes/admin'));
 app.use('/api', require('./routes/api'));
 
 // Enable custom routes
 app.use('/', require('./routes/custom'));
-
