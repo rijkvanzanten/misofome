@@ -11,6 +11,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
+import Card from '../components/Card';
 
 import { updateUser } from '../actions/user';
 
@@ -54,7 +55,7 @@ const styles = {
   },
 };
 
-const mapStateToProps = state => ({ user: state.user });
+const mapStateToProps = state => ({ cards: state.cards, user: state.user });
 const mapDispatchToProps = dispatch => bindActionCreators({ updateUser }, dispatch);
 
 class Profile extends Component {
@@ -102,6 +103,13 @@ class Profile extends Component {
       />,
     ];
 
+    const cards = Object.keys(this.props.cards)
+      .map(key => this.props.cards[key])
+      .filter(card => card.user._id === this.props.user._id)
+      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
+    const favoritesIDs = this.props.user.favorites.map(card => card._id);
+
     return (
       <div>
         <TopBar
@@ -118,7 +126,15 @@ class Profile extends Component {
           <img style={styles.avatar} src={`/${this.props.user.image.filename}`} />
           <h2 style={styles.name}>{this.props.user.fullName}</h2>
         </header>
-        <main />
+        <main>
+          {cards.map(card =>
+            <Card
+              card={card}
+              key={card._id}
+              favorite={favoritesIDs.indexOf(card._id) !== -1}
+            />,
+          )}
+        </main>
         <BottomNav />
         <Dialog
           title="Profiel instellingen"
