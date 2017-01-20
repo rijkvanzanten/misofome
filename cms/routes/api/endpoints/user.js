@@ -34,7 +34,7 @@ router.post('/login', (req, res) => {
         // Something fails in database
         if(err) {
           console.log(err);
-          res.status(500).end();
+          return res.status(500).end();
         }
 
         // If passwords match
@@ -52,7 +52,7 @@ router.post('/login', (req, res) => {
               // Something fails in database
               if(err) {
                 console.log(err);
-                res.status(500).end();
+                return res.status(500).end();
               }
 
               // Generate access token
@@ -60,7 +60,7 @@ router.post('/login', (req, res) => {
               const token = jwt.sign({ _id }, app.get('secretString'));
 
               // Send access token and user object to client
-              res.status(200).json({ user, token });
+              return res.status(200).json({ user, token });
             });
         }
       });
@@ -71,22 +71,30 @@ router.post('/login', (req, res) => {
 router.post('/', uploadFile, processFile, (req, res) => {
   const User = mongoose.model('user');
 
+  // Create new user
   const newUser = new User(req.body);
 
-  newUser.save((err, record, numAffected) => {
-    console.log(err);
-    if (err) {
-      res.json({ success: false, message: err });
-    } else {
-      const token = jwt.sign(newUser, app.get('secretString'));
+  // Save user to DB
+  newUser.save((err, user) => {
+    // Delete password property of user object
+    console.log(user);
+    user.password = undefined;
 
-      res.json({
-        success: true,
-        message: 'User created',
-        token,
-        user: record,
-      });
+    // Username already exists
+    if(err && err.code === 11000) {
+      return res.status(409).end();
     }
+
+    // Something else failed in the DB
+    if(err && err.code !== 11000) {
+      console.log(err);
+      return res.status(500).end();
+    }
+
+    const { _id } = user;
+    const token = jwt.sign({ _id }, app.get('secretString'));
+
+    return res.status(201).json({ token, user });
   });
 });
 
