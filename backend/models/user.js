@@ -30,7 +30,7 @@ const UserSchema = mongoose.Schema({
 
 // Set fullName key to be username by default
 UserSchema.pre('save', function (next) {
-  this.fullName = this.get('username');
+  if(!this.get('fullName')) this.fullName = this.get('username');
   next();
 });
 
