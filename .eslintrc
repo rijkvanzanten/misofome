@@ -16,7 +16,7 @@
     "react",
   ],
   "rules": {
-    "no-console": 1,
+    "no-console": 0,
     "no-underscore-dangle": 0,
     "quotes": [1, "single"],
     "semi": [1, "always"],
