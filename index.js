@@ -13,17 +13,17 @@ app.use(compression());
 // eslint-disable-next-line global-require
 if (dev && !apiOnly) app.use(require('./dev-server'));
 
-app.use(express.static(path.join(__dirname, 'dist'), {
+app.use(express.static(path.join(__dirname, 'public', 'dist'), {
   index: false,
   maxage: 604800000,
 }));
 
-app.use(express.static(path.join(__dirname, 'static'), {
+app.use(express.static(path.join(__dirname, 'public', 'static'), {
   index: false,
   maxage: 604800000,
 }));
 
-app.use(express.static(path.join(__dirname, 'uploads'), {
+app.use(express.static(path.join(__dirname, 'public', 'uploads'), {
   index: false,
   maxage: 604800000,
 }));
