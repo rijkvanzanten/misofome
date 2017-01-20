@@ -27,18 +27,18 @@ function authenticateUser(username, password, cb) {
     dispatch(requestKey());
 
     request
-        .post('/api/1/user/login')
-        .send({ username, password })
-        .end((err, res) => {
-          if (err) throw err;
+      .post('/api/1/user/login')
+      .send({ username, password })
+      .end((err, res) => {
+        if (err) throw err;
 
-          if (res.body.success) {
-            dispatch(receiveKey(true, res.body.token, res.body.user));
-            cb(true);
-          } else {
-            dispatch(receiveKey(false, '', ''));
-          }
-        });
+        if (res.body.success) {
+          dispatch(receiveKey(true, res.body.token, res.body.user));
+          cb(true);
+        } else {
+          dispatch(receiveKey(false, '', ''));
+        }
+      });
   };
 }
 
