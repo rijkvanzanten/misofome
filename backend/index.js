@@ -11,10 +11,13 @@ const path = require('path');
 const morgan = require('morgan');
 const fs = require('fs');
 const crypto = require('crypto');
+const cors = require('cors');
 
 const models = path.join(__dirname, '/models');
 
 const app = module.exports = express();
+
+app.use(cors());
 
 // Register all models
 fs.readdirSync(models)

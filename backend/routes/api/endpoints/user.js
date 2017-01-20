@@ -110,9 +110,6 @@ router.put('/', checkToken, uploadFile, processFile, (req, res) => {
         return res.status(500).end();
       }
 
-      // User wasn't found
-      if(!user) return res.status(409).end();
-
       // Add body data to found user
       Object.assign(user, req.body);
 
