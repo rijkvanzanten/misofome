@@ -1,0 +1,28 @@
+{
+  "name": "misofome",
+  "version": "1.0.0",
+  "description": "The Misofome Webapp and API",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "cd ./api && npm install && cd ../webapp && npm install && npm run build",
+    "dev": "nodemon index.js --watch api",
+    "start": "NODE_ENV=production node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RijkvanZanten/misofome.git"
+  },
+  "keywords": [],
+  "author": "Rijk van Zanten <rijkvanzanten@me.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/RijkvanZanten/misofome/issues"
+  },
+  "homepage": "https://github.com/RijkvanZanten/misofome#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
