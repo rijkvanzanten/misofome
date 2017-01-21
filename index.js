@@ -13,8 +13,8 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-app.use('*', require('./api'));
-app.use('*', require('./webapp'));
+app.use('/', require('./api'));
+app.use('/', require('./webapp'));
 
 app.listen(port, () => {
   console.log('API & app started at port ' + port);
