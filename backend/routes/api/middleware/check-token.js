@@ -6,11 +6,8 @@ module.exports = (req, res, next) => {
 
   if (token && token.length > 0) {
     jwt.verify(token, app.get('secretString'), (err, decoded) => {
-      // Something fails in with decoding jwt
-      if(err) {
-        console.log(err);
-        return res.status(500).end();
-      }
+      // Token is invalid
+      if(err) return res.status(400).end();
 
       req.userID = decoded._id;
       next();
