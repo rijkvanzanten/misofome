@@ -1,0 +1,26 @@
+{
+  "name": "misofome-app",
+  "version": "3.0.0",
+  "description": "The Misofome app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RijkvanZanten/misofome.git"
+  },
+  "keywords": [
+    "misofome"
+  ],
+  "author": "Rijk van Zanten <rijkvanzanten@me.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/RijkvanZanten/misofome/issues"
+  },
+  "homepage": "https://github.com/RijkvanZanten/misofome#readme",
+  "devDependencies": {
+    "eslint": "^3.14.0",
+    "eslint-plugin-react": "^6.9.0"
+  }
+}
