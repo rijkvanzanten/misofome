@@ -5,15 +5,22 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const SALT_WORK_FACTOR = 10;
-
 const UserSchema = mongoose.Schema({
-  username: { type: String, required: true, index: { unique: true } },
+  // Required
+  username: {
+    type: String,
+    required: true,
+    index: {
+      unique: true,
+    },
+  },
   password: {
     type: String,
     required: true,
     select: false,
   },
+
+  // User configurable
   favorites: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'card',
@@ -29,18 +36,18 @@ const UserSchema = mongoose.Schema({
 });
 
 // Set fullName key to be username by default
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', function(next) {
   if(!this.get('fullName')) this.fullName = this.get('username');
   next();
 });
 
 // Hash password on save
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', function(next) {
   // Only hash the password if it has been modified
   if (!this.isModified('password')) return next();
 
   // Generate salt
-  return bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
+  return bcrypt.genSalt(10, (err, salt) => {
     if (err) return next(err);
 
     // Hash the password along with the salt
@@ -52,11 +59,6 @@ UserSchema.pre('save', function (next) {
       return next();
     });
   });
-});
-
-// TODO: Hash password on update (PUT)
-UserSchema.pre('update', () => {
-
 });
 
 // Set comparePassword method on user model

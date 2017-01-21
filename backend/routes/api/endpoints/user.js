@@ -14,6 +14,9 @@ const router = express.Router();
 router.post('/login', (req, res) => {
   const User = mongoose.model('user');
 
+  // When username or password is missing
+  if(!req.body.username && !req.body.password) return res.status(400).end();
+
   User
     .findOne({ username: req.body.username})
     .select('+password -_id')
