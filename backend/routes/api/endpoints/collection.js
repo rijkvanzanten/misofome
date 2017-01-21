@@ -11,12 +11,12 @@ const processFile = require('../middleware/process-file');
 router.post('/:model', checkToken, addModelIfExists, uploadFile, processFile, (req, res) => {
 
   // Create data object
-  Object.assign(req.body, {
+  const data = Object.assign({}, req.body, {
     createdBy: req.userID,
   });
 
   // Create Mongoose document
-  const doc = new res.model(req.body);
+  const doc = new res.model(data);
 
   // Save document to DB
   doc.save((err, record) => {
