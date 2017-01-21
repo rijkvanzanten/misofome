@@ -9,6 +9,8 @@ const processFile = require('../middleware/process-file');
 
 // Create document
 router.post('/:model', checkToken, addModelIfExists, uploadFile, processFile, (req, res) => {
+  // This model is disabled
+  if(res.model.disabled) return res.status(403).end();
 
   // Create data object
   const data = Object.assign({}, req.body, {
@@ -33,7 +35,7 @@ router.post('/:model', checkToken, addModelIfExists, uploadFile, processFile, (r
 
 // Read documents
 router.get('/:model', checkToken, addModelIfExists, (req, res) => {
-  // This model may not be read
+  // This model is disabled
   if(res.model.disabled) return res.status(403).end();
 
   // Setup search parameters
@@ -81,8 +83,8 @@ router.get('/:model', checkToken, addModelIfExists, (req, res) => {
 });
 
 // Update document
-router.put('/:model/:id', checkToken, addModelIfExists, (req, res) => {
-  // This model may not be updated
+router.put('/:model/:id', checkToken, addModelIfExists, uploadFile, processFile, (req, res) => {
+  // This model is disabled
   if(res.model.disabled) return res.status(403).end();
 
   // id param is missing
