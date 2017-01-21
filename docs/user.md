@@ -1,8 +1,4 @@
-# Endpoints
-
----
-
-# Login {#user-login}
+# Login User {#user-login}
 Authenticate user based on login credentials
 
 {% method -%}
@@ -31,7 +27,7 @@ const user = {
 };
 
 request
-  .post('/api/1/user/login')
+  .post('/api/user/login')
   .send(user)
   .end();
 ```
@@ -65,7 +61,7 @@ Successful request returns the logged in user and the access token
 
 ---
 
-# Create user {#user-create}
+# Create User {#user-create}
 Create new user
 
 {% method -%}
@@ -95,7 +91,7 @@ const user = {
 };
 
 request
-  .post('/api/1/user/')
+  .post('/api/user/')
   .send(user)
   .end();
 ```
@@ -130,7 +126,7 @@ Successful request returns the created user and the access token
 
 ---
 
-# Update {#user-login}
+# Update User {#user-update}
 Update current logged in user
 
 {% method -%}
@@ -155,7 +151,7 @@ $ curl -H "Content-Type: application/json" -H "x-access-token: eyJhbGc..." -X PU
 {% sample lang="js" -%}
 ```js
 request
-  .put('/api/1/user')
+  .put('/api/user')
   .set('x-access-token', 'eyJhbGc...')
   .send({
     fullName: 'Rijk van Zanten'
