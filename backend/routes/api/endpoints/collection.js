@@ -118,4 +118,33 @@ router.put('/:model/:id', checkToken, addModelIfExists, uploadFile, processFile,
   });
 });
 
+// Remove document
+router.delete('/:model/:id', checkToken, addModelIfExists, uploadFile, processFile, (req, res) => {
+  // This model is disabled
+  if(res.model.disabled) return res.status(403).end();
+
+  res.model.findById(req.params.id, (err, doc) => {
+    // Something fails in DB
+    if(err) {
+      console.log(err);
+      return res.status(500).end();
+    }
+
+    // Document may only be deleted by the original creator
+    if(res.model.userLock && doc.createdBy.toString() !== req.userID) {
+      return res.status(401).end();
+    }
+
+    res.model.findByIdAndRemove(req.params.id, (err) => {
+      // Something fails in DB
+      if(err) {
+        console.log(err);
+        return res.status(500).end();
+      }
+
+      res.status(200).end();
+    });
+  });
+});
+
 module.exports = router;
