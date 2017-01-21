@@ -12,7 +12,6 @@ module.exports = {
     path: '/',
     filename: 'bundle.js',
     publicPath: '/',
-    pathinfo: true,
   },
   devtool: 'eval',
   target: 'web',

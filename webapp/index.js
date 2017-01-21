@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const compression = require('compression');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3002;
 const dev = process.env.NODE_ENV !== 'production';
 const standalone = process.env.STANDALONE || false;
 
@@ -10,7 +10,7 @@ const app = express();
 
 app.use(compression());
 
-if (dev) app.use(require('./hmr-server'));
+if (dev) require('./wds');
 
 // Make dist folder publicly available
 app.use(express.static(path.join(__dirname, 'public', 'dist'), {
