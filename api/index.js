@@ -16,6 +16,7 @@ const cors = require('cors');
 
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
+const standalone = process.env.STANDALONE || false;
 
 const app = express();
 
@@ -56,7 +57,11 @@ app.use('/api', require('./routes/api'));
 // Enable custom routes
 app.use('/', require('./routes/custom'));
 
-// Listen to specified port
-app.listen(port, () => {
-  console.log(`Server started at localhost:${port}`);
-});
+// Listen to specified port when in standalone mode
+if(standalone) {
+  app.listen(port, () => {
+    console.log(`Server started at localhost:${port}`);
+  });
+}
+
+module.exports = app;

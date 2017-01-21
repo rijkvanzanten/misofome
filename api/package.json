@@ -4,8 +4,8 @@
   "description": "The Misofome API",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "NODE_ENV=production node index.js"
+    "dev": "STANDALONE=true nodemon index.js",
+    "start": "NODE_ENV=production STANDALONE=true node index.js"
   },
   "repository": {
     "type": "git",
@@ -33,7 +33,6 @@
     "multer": "^1.2.1"
   },
   "devDependencies": {
-    "babel-eslint": "^7.1.1",
     "nodemon": "^1.11.0"
   }
 }
