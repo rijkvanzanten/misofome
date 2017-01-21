@@ -71,6 +71,7 @@ UserSchema.methods.comparePassword = function comparePassword(candidatePassword,
 
 const UserModel = mongoose.model('user', UserSchema);
 
+// Disable using this model from the regular /collection endpoints
 UserModel.disabled = true;
 
 module.exports = UserModel;
