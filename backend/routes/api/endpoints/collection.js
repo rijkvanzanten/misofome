@@ -7,6 +7,30 @@ const checkToken = require('../middleware/check-token');
 const uploadFile = require('../middleware/upload-file');
 const processFile = require('../middleware/process-file');
 
+// Create document
+router.post('/:model', checkToken, addModelIfExists, uploadFile, processFile, (req, res) => {
+
+  // Create data object
+  const dataObj = Object.assign({}, req.body, {
+    user: req.userID,
+  });
+
+  // Create Mongoose document
+  const doc = new res.model(dataObj);
+
+  // Save document to DB
+  doc.save((err, record) => {
+    // Something failed in DB
+    if(err) {
+      console.log(err);
+      return res.status(500).end();
+    }
+
+    // Send newly created record
+    res.status(201).json({ record });
+  });
+});
+
 router.get('/:model', checkToken, addModelIfExists, (req, res) => {
   if (res.model.disabled) {
     return res.json({
@@ -37,28 +61,7 @@ router.get('/:model', checkToken, addModelIfExists, (req, res) => {
   });
 });
 
-router.post('/:model', checkToken, addModelIfExists, uploadFile, processFile, (req, res) => {
-  if (res.model.disabled) {
-    return res.json({
-      success: false,
-      message: 'This model can\'t be edited through this route',
-    });
-  }
 
-  const dataObj = Object.assign({}, req.body, {
-    user: req.user._id, // eslint-disable-line no-underscore-dangle
-  });
-
-  const doc = new res.model(dataObj); // eslint-disable-line new-cap
-
-  doc.save((err, record) => {
-    res.json({
-      success: true,
-      message: '',
-      records: record,
-    });
-  });
-});
 
 router.put('/:model/:id', checkToken, addModelIfExists, (req, res) => {
   if (res.model.disabled) {
