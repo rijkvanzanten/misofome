@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
-
-const nodeEnv = process.env.NODE_ENV || 'development';
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const PATHS = {
   app: path.join(__dirname, 'src'),
@@ -12,7 +12,7 @@ module.exports = {
   devtool: false,
   entry: {
     app: PATHS.app,
-    vendor: ['react'],
+    vendor: ['react', 'react-dom', 'material-ui', 'moment'],
   },
   output: {
     path: PATHS.build,
@@ -25,10 +25,7 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'babel-loader',
-            query: {
-              presets: ['es2015', 'react']
-            }
+            loader: 'babel-loader'
           }
         ]
       },
@@ -55,18 +52,22 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx']
   },
   plugins: [
+    new CleanWebpackPlugin(['./public/dist']),
+    // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/), imma still need NL tho..
+    new HtmlWebpackPlugin({
+      template: 'template-html.ejs',
+    }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: Infinity,
       filename: 'vendor.[hash].js',
     }),
     new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: JSON.stringify(nodeEnv) },
+      'process.env': { NODE_ENV: JSON.stringify('production') },
     }),
-    new webpack.NamedModulesPlugin(),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
       debug: false,
@@ -74,18 +75,8 @@ module.exports = {
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
-        screw_ie8: true,
-        conditionals: true,
-        unused: true,
-        comparisons: true,
-        sequences: true,
-        dead_code: true,
-        evaluate: true,
-        if_return: true,
-        join_vars: true,
       },
-      output: {
-        comments: false,
-      },
+      comments: false,
     })
-  ]};
+  ],
+};
