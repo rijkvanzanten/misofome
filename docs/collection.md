@@ -43,7 +43,7 @@ Successful request returns the created record
     "createdAt": "2017-01-21T14:40:21.086Z",
     "title": "Card Title",
     "content": "#supermooi",
-    "user": "58821d24fd598372b00165a0",
+    "createdBy": "58821d24fd598372b00165a0",
     "_id": "588372d5458c77141fff58b6"
   }
 }
@@ -53,6 +53,7 @@ Successful request returns the created record
 |Code     |Description            |
 |---------|-----------------------|
 |201      |Creation successful    |
+|403      |Model disabled         |
 |500      |Internal server error  |
 
 ---
@@ -90,7 +91,6 @@ request
     order: 'desc'
   })
   .set('x-access-token', 'eyJhbGc...')
-  .send(card)
   .end();
 ```
 {% endmethod %}
@@ -105,7 +105,7 @@ Successful request returns array of selected records
     "createdAt": "2017-01-21T15:05:54.347Z",
     "title": "Nog een card",
     "content": "Mooie kaart joo",
-    "user": "58821d24fd598372b00165a0",
+    "createdBy": "58821d24fd598372b00165a0",
     "__v": 0
   },
   {
@@ -114,7 +114,7 @@ Successful request returns array of selected records
     "createdAt": "2017-01-21T14:40:21.086Z",
     "title": "Card Title",
     "content": "#supermooi",
-    "user": "58821d24fd598372b00165a0",
+    "createdBy": "58821d24fd598372b00165a0",
     "__v": 0
   }
 ]
@@ -124,7 +124,105 @@ Successful request returns array of selected records
 |Code     |Description            |
 |---------|-----------------------|
 |200      |Success                |
-|403      |Model may not be read  |
+|403      |Model disabled         |
+|500      |Internal server error  |
+
+---
+
+# Update Document {#update}
+
+{% method -%}
+## Request
+```
+PUT /api/collection/[collection-name]/[document-id]
+```
+
+|name       |value   |description                                    |
+|-----------|--------|-----------------------------------------------|
+|collection |REQUIRED|Collection in which the document exists       |
+|document |REQUIRED| Document to update |
+|data       |        | This data and its architecture is based on your specific project's schema. |
+
+{% common -%}
+Example request
+{% sample lang="http" -%}
+```bash
+$ curl -H "Content-Type: application/json" -H "x-access-token: eyJhbGc..." -X PUT -d '{"content":"Updated content"}' http://localhost:3000/api/collection/card/58838a07592d2a574cd706bf
+```
+
+{% sample lang="js" -%}
+```js
+request
+  .put('/api/collection/card/58838a07592d2a574cd706bf')
+  .set('x-access-token', 'eyJhbGc...')
+  .send({
+    content: 'Updated content',
+  })
+  .end();
+```
+{% endmethod %}
+
+## Example Response
+Successful request returns the updated record
+```json
+{
+  "record": {
+    "__v": 0,
+    "updatedAt": "2017-01-21T14:40:21.086Z",
+    "createdAt": "2017-01-21T14:40:21.086Z",
+    "title": "Card Title",
+    "content": "Updated content",
+    "createdBy": "58821d24fd598372b00165a0",
+    "_id": "588372d5458c77141fff58b6"
+  }
+}
+```
+
+#### Possible HTTP status codes
+|Code     |Description            |
+|---------|-----------------------|
+|200      |Update successful      |
+|401      |Document may only be updated by creator |
+|403      |Model disabled         |
+|500      |Internal server error  |
+
+---
+
+# Delete Document {#delete}
+
+{% method -%}
+## Request
+```
+DELETE /api/collection/[collection-name]/[document-id]
+```
+
+|name       |value   |description                                    |
+|-----------|--------|-----------------------------------------------|
+|collection |REQUIRED|Collection in which the document exists       |
+|document   |REQUIRED| Document to delete |
+
+{% common -%}
+Example request
+{% sample lang="http" -%}
+```bash
+$ curl -H "x-access-token: eyJhbGc..." -X DELETE http://localhost:3000/api/collection/card/58838a07592d2a574cd706bf
+```
+
+{% sample lang="js" -%}
+```js
+request
+  .delete('/api/collection/card/58838a07592d2a574cd706bf')
+  .set('x-access-token', 'eyJhbGc...')
+  .end();
+```
+{% endmethod %}
+
+#### Possible HTTP status codes
+|Code     |Description            |
+|---------|-----------------------|
+|200      |Deletion successful    |
+|401      |Document may only be updated by creator |
+|403      |Model disabled         |
 |500      |Internal server error  |
 
 ---
