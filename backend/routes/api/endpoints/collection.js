@@ -31,33 +31,52 @@ router.post('/:model', checkToken, addModelIfExists, uploadFile, processFile, (r
   });
 });
 
+// Read documents
 router.get('/:model', checkToken, addModelIfExists, (req, res) => {
-  if (res.model.disabled) {
-    return res.json({
-      success: false,
-      message: 'This model can\'t be viewed through this route',
-    });
-  }
+  // This model may not be read
+  if(res.model.disabled) return res.status(403).end();
 
-  // Set search params
-  const collection = res.model.find({});
+  // Setup search parameters
+  const collection = res.model.find();
 
   // Populate sub-fields with ?populate=[sub],[sub] query
-  if (req.query.populate) {
+  if(req.query.populate) {
     req.query.populate.split(',').forEach((populateOption) => {
       collection.populate(populateOption);
     });
   }
 
-  // ?where[field]={value}
-  if (req.query.where) {
+  // Set filter parameters with ?where[field]={value} query
+  if(req.query.where) {
     Object.keys(req.query.where).forEach((key) => {
       collection.where(key).equals(req.query.where[key]);
     });
   }
 
+  // Set item sorting based on ?order_by=[property] query
+  if(req.query.order_by) {
+    collection.sort({ [req.query.order_by]: req.query.order || 1});
+  }
+
+  // Set amount of records per page ?per_page=[num] (defaults to no limit)
+  if(req.query.per_page) {
+    collection.limit(Number(req.query.per_page));
+  }
+
+  // Allow page param only when per_page is set ?per_page=[num]&page=2
+  if(req.query.per_page && req.query.page) {
+    collection.skip(Number(req.query.per_page) * (Number(req.query.page) - 1));
+  }
+
+  // Execute search in DB
   collection.exec((err, records) => {
-    res.json(records);
+    // Something fails in DB
+    if(err) {
+      console.log(err);
+      return res.status(500).end();
+    }
+
+    return res.json(records);
   });
 });
 
