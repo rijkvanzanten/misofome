@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  context: __dirname,
   entry: [
     'webpack/hot/dev-server',
     'webpack-hot-middleware/client',

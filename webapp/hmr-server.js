@@ -8,21 +8,15 @@ const config = require('./webpack.config.dev.js');
 const app = express();
 
 const compiler = webpack(config);
-const middleware = webpackMiddleware(compiler, {
-  contentBase: 'src',
-  noInfo: true,
-  quiet: false,
-  stats: {
-    colors: true,
-    hash: false,
-    timings: true,
-    chunks: false,
-    chunkModules: false,
-    modules: false,
-  },
-});
 
-app.use(middleware);
+app.use(webpackMiddleware(compiler, {
+  noInfo: true,
+  hot: true,
+  historyApiFallback: true,
+  publicPath: '/',
+  progress: true,
+  contentBase: process.cwd(),
+}));
 app.use(webpackHotMiddleware(compiler));
 
 module.exports = app;
