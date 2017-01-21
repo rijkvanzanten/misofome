@@ -60,7 +60,7 @@ app.use('/', require('./routes/custom'));
 // Listen to specified port when in standalone mode
 if(standalone) {
   app.listen(port, () => {
-    console.log(`Server started at localhost:${port}`);
+    console.log(`API started at localhost:${port}`);
   });
 }
 
