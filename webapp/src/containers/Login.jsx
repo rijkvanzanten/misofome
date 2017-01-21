@@ -7,7 +7,7 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
-import authenticateUser from '../actions/user';
+import { authenticateUser } from '../actions/user';
 import logo from '../assets/icon-red.svg';
 
 const styles = {
@@ -43,22 +43,29 @@ class Login extends Component {
     this.login = this.login.bind(this);
   }
 
+  componentDidUpdate() {
+    const { user } = this.props;
+
+    if(!user.loggingIn && !user.err && user.token.length) {
+      const { location } = this.props;
+
+      if (location.state && location.state.nextPathname) {
+        this.props.router.replace(location.state.nextPathname);
+      } else {
+        this.props.router.replace('/');
+      }
+    }
+  }
+
   login() {
-    const { authenticateUser } = this.props; // eslint-disable-line no-shadow
+    const { authenticateUser } = this.props;
+
     const username = this.username.input.value;
     const password = this.password.input.value;
 
-    authenticateUser(username, password, (success) => {
-      if (success) {
-        const { location } = this.props;
+    const user = { username, password };
 
-        if (location.state && location.state.nextPathname) {
-          this.props.router.replace(location.state.nextPathname);
-        } else {
-          this.props.router.replace('/');
-        }
-      }
-    });
+    authenticateUser(user);
   }
 
   render() {

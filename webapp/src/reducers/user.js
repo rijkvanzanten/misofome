@@ -1,35 +1,42 @@
 const defaultState = {
   token: '',
   loggingIn: false,
-  id: '',
-  username: '',
-  favorites: [],
+  err: false,
+  info: {}
 };
 
 function user(state = defaultState, action) {
-  switch (action.type) {
-    case 'REQUEST_KEY':
+  switch(action.type) {
+    case 'FETCH_USER': {
       return {
         ...state,
         loggingIn: true,
+        err: false,
       };
+    }
 
-    case 'RECEIVE_KEY':
+    case 'RECEIVE_USER': {
+      const { info, token } = action;
       return {
         ...state,
         loggingIn: false,
-        token: action.token,
-        ...action.user,
+        err: false,
+        token,
+        info,
       };
+    }
 
-    case 'UPDATE_USER':
+    case 'LOGIN_FAILED': {
       return {
         ...state,
-        ...action.user,
-      };
+        loggingIn: false,
+        err: true,
+      }
+    }
 
-    default:
+    default: {
       return state;
+    }
   }
 }
 

@@ -1,79 +1,36 @@
 import request from 'superagent';
 
-function requestKey() {
+function fetchUser() {
   return {
-    type: 'REQUEST_KEY',
+    type: 'FETCH_USER',
   };
 }
 
-export function receiveKey(success, token, user) {
+function receiveUser(info, token) {
   return {
-    type: 'RECEIVE_KEY',
-    success,
-    token,
-    user,
+    type: 'RECEIVE_USER',
+    info, token,
   };
 }
 
-function receiveUpdatedUser(user) {
+function loginFailed() {
   return {
-    type: 'UPDATE_USER',
-    user,
+    type: 'LOGIN_FAILED',
   };
 }
 
-function authenticateUser(username, password, cb) {
-  return (dispatch) => {
-    dispatch(requestKey());
+export const authenticateUser = user => dispatch => {
+  dispatch(fetchUser());
 
-    request
-      .post('/api/1/user/login')
-      .send({ username, password })
-      .end((err, res) => {
-        if (err) throw err;
-
-        if (res.body.success) {
-          dispatch(receiveKey(true, res.body.token, res.body.user));
-          cb(true);
-        } else {
-          dispatch(receiveKey(false, '', ''));
-        }
-      });
-  };
-}
-
-export function updateUser(key, user) {
-  return (dispatch) => {
-    request
-      .put('/api/1/user')
-      .set('x-access-token', key)
-      .send(user)
-      .end((err, res) => {
-        if (err) throw err;
-
-        if (res.body.success) {
-          dispatch(receiveUpdatedUser(res.body.user));
-        } else {
-          console.error(res.body);
-        }
-      });
-  };
-}
-
-export function registerUser(user, cb) {
-  return (dispatch) => {
-    request
-      .post('/api/1/user')
-      .send(user)
-      .end((err, res) => {
-        if (err) throw err;
-
-        if (res.body.success) {
-          dispatch(receiveKey(true, res.body.token, res.body.user));
-          cb(true);
-        }
-      });
-  };
-}
-
-export default authenticateUser;
+  request
+    .post('/api/user/login')
+    .send(user)
+    .end((err, res) => {
+      if(res.ok) {
+        const { user, token } = res.body;
+        dispatch(receiveUser(user, token));
+      } else {
+        dispatch(loginFailed());
+      }
+    });
+};
