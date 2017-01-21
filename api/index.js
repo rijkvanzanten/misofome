@@ -1,7 +1,8 @@
 /**
- * Misofome
+ * Misofome API
  *
  * @author Rijk van Zanten
+ * January 2017
  */
 
 const express = require('express');
@@ -13,13 +14,19 @@ const fs = require('fs');
 const crypto = require('crypto');
 const cors = require('cors');
 
-const models = path.join(__dirname, '/models');
+const port = process.env.PORT || 3000;
+const dev = process.env.NODE_ENV !== 'production';
 
-const app = module.exports = express();
+const app = express();
 
+// Allow cross origin resource sharing
 app.use(cors());
 
+// Log all incoming requests to console (only in dev mode)
+if(dev) app.use(morgan('dev'));
+
 // Register all models
+const models = path.join(__dirname, '/models');
 fs.readdirSync(models)
   .filter(file => ~file.search(/^[^\.].*\.js$/))
   .forEach(file => require(path.join(models, file)));
@@ -30,15 +37,14 @@ mongoose.connect('mongodb://localhost/misofome', (err) => {
   console.log('Database connected');
 });
 
-// Log incoming requests to console
-app.use(morgan('dev'));
+// Make uploads folder publicly available
+app.use(express.static(path.join(__dirname, 'uploads'), {
+  index: false,
+  maxage: 604800000,
+}));
 
-// Create random string for hashing purposes
+// Create random string for api-auth hashing purposes
 app.set('secretString', crypto.randomBytes(64).toString('hex'));
-
-// Set view engine
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
 
 // Setup body-parser
 app.use(bodyParser.json());
@@ -49,3 +55,8 @@ app.use('/api', require('./routes/api'));
 
 // Enable custom routes
 app.use('/', require('./routes/custom'));
+
+// Listen to specified port
+app.listen(port, () => {
+  console.log(`Server started at localhost:${port}`);
+});
