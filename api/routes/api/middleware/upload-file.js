@@ -1,7 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 
-const publicPath = path.join(process.cwd(), './uploads');
+const publicPath = path.join(__dirname, '..', '..', '..', 'uploads');
 
 const acceptedFileTypes = [
   'image/png',
