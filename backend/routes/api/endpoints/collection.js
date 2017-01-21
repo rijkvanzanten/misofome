@@ -11,12 +11,12 @@ const processFile = require('../middleware/process-file');
 router.post('/:model', checkToken, addModelIfExists, uploadFile, processFile, (req, res) => {
 
   // Create data object
-  const dataObj = Object.assign({}, req.body, {
-    user: req.userID,
+  Object.assign(req.body, {
+    createdBy: req.userID,
   });
 
   // Create Mongoose document
-  const doc = new res.model(dataObj);
+  const doc = new res.model(req.body);
 
   // Save document to DB
   doc.save((err, record) => {
@@ -80,47 +80,39 @@ router.get('/:model', checkToken, addModelIfExists, (req, res) => {
   });
 });
 
-
-
+// Update document
 router.put('/:model/:id', checkToken, addModelIfExists, (req, res) => {
-  if (res.model.disabled) {
-    return res.json({
-      success: false,
-      message: 'This model can\'t be edited through this route',
-    });
-  }
+  // This model may not be updated
+  if(res.model.disabled) return res.status(403).end();
 
-  if (!req.params.id) {
-    res.json({
-      success: false,
-      message: 'ID param missing',
-    });
-  }
+  // id param is missing
+  if (!req.params.id) return res.status(400).end();
 
   res.model.findById(req.params.id, (err, doc) => {
-    if (err) {
-      res.json({
-        success: false,
-        message: err,
-      });
-    } else if (res.model.userLock && doc.user_id.toString() !== req.user._id) {
-      res.json({
-        success: false,
-        message: 'Only the creator of this document is allowed to edit',
-      });
-    } else if (res.model.userLock && doc.user_id.toString() === req.user._id) {
-      Object.assign(doc, req.body);
-      doc.save((err, updatedDoc) => {
-        if (err) {
-          res.json({
-            success: false,
-            message: err,
-          });
-        } else {
-          res.json(updatedDoc);
-        }
-      });
+    // Something fails in DB
+    if(err) {
+      console.log(err);
+      return res.status(500).end();
     }
+
+    // Document may only be updated by the original creator
+    if(res.model.userLock && doc.createdBy.toString() !== req.userID) {
+      return res.status(401).end();
+    }
+
+    // Update document
+    Object.assign(doc, req.body);
+
+    // Save document to DB
+    doc.save((err, updatedDoc) => {
+      // Something fails in DB
+      if(err) {
+        console.log(err);
+        return res.status(500).end();
+      }
+
+      res.json(updatedDoc);
+    });
   });
 });
 

@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
   if (token && token.length > 0) {
     jwt.verify(token, app.get('secretString'), (err, decoded) => {
       // Token is invalid
-      if(err) return res.status(400).end();
+      if(err) return res.status(401).end();
 
       req.userID = decoded._id;
       next();

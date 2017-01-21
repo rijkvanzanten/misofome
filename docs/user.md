@@ -56,6 +56,7 @@ Successful request returns the logged in user and the access token
 |Code     |Description            |
 |---------|-----------------------|
 |200      |Login successful       |
+|400      |Username or password missing   |
 |401      |User not found         |
 |500      |Internal server error  |
 
