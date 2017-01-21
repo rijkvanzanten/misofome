@@ -11,7 +11,6 @@ const mongoose = require('mongoose');
 const path = require('path');
 const morgan = require('morgan');
 const fs = require('fs');
-const crypto = require('crypto');
 const cors = require('cors');
 
 const port = process.env.PORT || 3000;
@@ -43,9 +42,6 @@ app.use(express.static(path.join(__dirname, 'uploads'), {
   index: false,
   maxage: 604800000,
 }));
-
-// Create random string for api-auth hashing purposes
-app.set('secretString', crypto.randomBytes(64).toString('hex'));
 
 // Setup body-parser
 app.use(bodyParser.json());

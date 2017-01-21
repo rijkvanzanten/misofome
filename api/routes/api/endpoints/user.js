@@ -4,9 +4,7 @@ const jwt = require('jsonwebtoken');
 const uploadFile = require('../middleware/upload-file');
 const processFile = require('../middleware/process-file');
 const checkToken = require('../middleware/check-token');
-
-// Require original server app (contains hashing secret)
-const app = require('../../../index');
+const hashSecret = require('../hashSecret');
 
 const router = express.Router();
 
@@ -60,11 +58,13 @@ router.post('/login', (req, res) => {
 
               // Generate access token
               const { _id } = user;
-              const token = jwt.sign({ _id }, app.get('secretString'));
+              const token = jwt.sign({ _id }, hashSecret);
 
               // Send access token and user object to client
               return res.status(200).json({ user, token });
             });
+        } else {
+          return res.status(422).end();
         }
       });
     });
