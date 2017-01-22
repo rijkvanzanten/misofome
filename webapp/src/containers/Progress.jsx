@@ -32,21 +32,12 @@ class Progress extends Component {
     super(props);
     this.state = {
       slideIndex: 0,
-      swipeableDisabled: false,
       stressSliderValue: 0
     };
   }
 
   handleSwipe(value) {
     this.setState({ slideIndex: value });
-  }
-
-  disableSwipeable() {
-    this.setState({swipeableDisabled: true});
-  }
-
-  enableSwipeable() {
-    this.setState({swipeableDisabled: false});
   }
 
   sliderInput(event, value) {
@@ -78,28 +69,50 @@ class Progress extends Component {
         <SwipeableViews
           index={this.state.slideIndex}
           onChangeIndex={this.handleSwipe.bind(this)}
-          disabled={this.state.swipeableDisabled}
         >
           <div style={{paddingTop: '48px'}}>
             <Paper style={styles.paper}>
               <div style={{padding: '50px'}}>
                 <p>Hoe gestrest voel je je nu?</p>
-                <Slider
-                  sliderStyle={{
-                    color: 'blue'
+                <div
+                  style={{
+                    position: 'relative',
+                    marginBottom: '40px',
+                    width: '100%',
+                    height: '160px'
                   }}
-                  min={0}
-                  max={100}
-                  step={1}
-                  onDragStart={this.disableSwipeable.bind(this)}
-                  onDragStop={this.enableSwipeable.bind(this)}
-                  onChange={this.sliderInput.bind(this)}
-                  value={this.state.stressSliderValue}
-                />
+                >
+                  <Slider
+                    sliderStyle={{
+                      color: 'blue'
+                    }}
+                    min={0}
+                    max={100}
+                    step={1}
+                    onChange={this.sliderInput.bind(this)}
+                    value={this.state.stressSliderValue}
+                    axis="y"
+                    style={{
+                      height: 150,
+                      position: 'absolute',
+                      left: '25%'
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontSize: '70px',
+                      position: 'absolute',
+                      right: '25%',
+                      top: '40%'
+                    }}
+                  >{this.state.stressSliderValue}</span>
+                </div>
                 <RaisedButton
                   fullWidth={true}
                   primary={true}
-                  label="Sla op" />
+                  label="Sla op"
+                  style={{marginTop: '20px'}}
+                />
               </div>
             </Paper>
             <Paper style={styles.paper}>
