@@ -69,7 +69,7 @@ class Login extends Component {
   }
 
   render() {
-    const { loggingIn } = this.props.user;
+    const { loggingIn, err } = this.props.user;
     const buttonLabel = loggingIn ? <CircularProgress size={20} thickness={2} /> : 'Log in';
 
     return (
@@ -82,12 +82,14 @@ class Login extends Component {
         <TextField
           floatingLabelText="Gebruikersnaam"
           fullWidth
+          errorText={err === 'user_not_found' ? 'Gebruiker bestaat niet' : false}
           ref={(el) => { this.username = el; }}
         />
         <TextField
           floatingLabelText="Wachtwoord"
           fullWidth
           type="password"
+          errorText={err === 'wrong_password' ? 'Wachtwoord onjuist' : false}
           ref={(el) => { this.password = el; }}
         />
         <RaisedButton

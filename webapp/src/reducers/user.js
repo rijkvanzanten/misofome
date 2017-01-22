@@ -30,7 +30,7 @@ function user(state = defaultState, action) {
       return {
         ...state,
         loggingIn: false,
-        err: true,
+        err: action.err,
       }
     }
 

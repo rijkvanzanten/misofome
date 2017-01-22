@@ -13,9 +13,10 @@ function receiveUser(info, token) {
   };
 }
 
-function loginFailed() {
+function loginFailed(err) {
   return {
     type: 'LOGIN_FAILED',
+    err
   };
 }
 
@@ -28,9 +29,16 @@ export const authenticateUser = user => dispatch => {
     .end((err, res) => {
       if(res.ok) {
         const { user, token } = res.body;
-        dispatch(receiveUser(user, token));
-      } else {
-        dispatch(loginFailed());
+        return dispatch(receiveUser(user, token));
+      }
+
+      switch(res.status) {
+        case 400:
+          return dispatch(loginFailed('data_missing'));
+        case 401:
+          return dispatch(loginFailed('user_not_found'));
+        case 422:
+          return dispatch(loginFailed('wrong_password'));
       }
     });
 };
