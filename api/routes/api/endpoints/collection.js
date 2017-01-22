@@ -28,8 +28,19 @@ router.post('/:model', checkToken, addModelIfExists, uploadFile, processFile, (r
       return res.status(500).end();
     }
 
-    // Send newly created record
-    res.status(201).json({ record });
+    const collection = res.model.findById(record._id);
+
+    // Populate sub-fields with ?populate=[sub],[sub] query
+    if(req.query.populate) {
+      req.query.populate.split(',').forEach((populateOption) => {
+        collection.populate(populateOption);
+      });
+    }
+
+    collection.exec((err, records) => {
+      // Send newly created record
+      res.status(201).json(records);
+    });
   });
 });
 
