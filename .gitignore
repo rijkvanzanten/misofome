@@ -51,4 +51,5 @@ dist
 .env
 npm-debug.log
 
-uploads/*
+api/uploads/*
+_book

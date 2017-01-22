@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "eslint:recommended",
+  ],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+  },
+  "env": {
+    "node": true,
+  },
+  "rules": {
+    "no-console": 0,
+    "no-underscore-dangle": 0,
+    "quotes": [1, "single"],
+    "semi": [1, "always"],
+    "react/prop-types": 0,
+    "no-case-declarations": 0,
+    "no-unused-vars": 1,
+  }
+}
