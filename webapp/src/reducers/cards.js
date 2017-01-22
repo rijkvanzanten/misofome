@@ -33,7 +33,7 @@ function cards(state = defaultState, action) {
     case 'ADD_CARD': {
       return {
         ...state,
-        [action.card._id]: action.card,
+        items: [...state.items, action.card]
       };
     }
 

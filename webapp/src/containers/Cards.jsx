@@ -1,3 +1,4 @@
+/* global FormData */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -79,9 +80,9 @@ class Cards extends Component {
     this.closeDialog();
   }
 
-  fetchCards(page) {
+  fetchCards() {
     this.props.fetchCards(this.props.user.token, this.state.page, 'createdAt');
-    this.setState(state => ({page: state.page++}));
+    this.setState(state => ({page: state.page + 1}));
   }
 
   render() {
@@ -101,6 +102,8 @@ class Cards extends Component {
 
     const { cards: { items } } = this.props;
 
+    items.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
     return (
       <div>
         <TopBar
@@ -115,20 +118,21 @@ class Cards extends Component {
         />
         <CardToolbar />
         <main>
-          <FlipMove>
-            <InfiniteScroll
-              next={this.fetchCards}
-              hasMore={this.props.cards.moreCardsAvailable}
-              loader={<CircularProgress size={60} thickness={7} />}
-            >
+          <InfiniteScroll
+            next={this.fetchCards}
+            hasMore={this.props.cards.moreCardsAvailable}
+            loader={<CircularProgress size={60} thickness={7} style={{textAlign: 'center'}}/>}
+            style={{ overflow: 'hidden' }}
+          >
+            <FlipMove>
               {items.map(card =>
                 <Card
                   card={card}
                   key={card._id}
                 />
               )}
-            </InfiniteScroll>
-          </FlipMove>
+              </FlipMove>
+          </InfiniteScroll>
         </main>
         <BottomNav />
         <Dialog

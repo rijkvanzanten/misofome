@@ -37,15 +37,19 @@ export function clearCards() {
 }
 
 export const fetchCards = (token, page, order_by) => dispatch => {
+  let order = 'desc';
+  if(order_by === 'title') order = 'asc';
+
   dispatch(requestCards(order_by, page));
 
   request
     .get('/api/collection/card')
     .query({
-      limit: 10,
+      per_page: 10,
       populate: 'createdBy',
       page,
-      order_by
+      order_by,
+      order
     })
     .set('x-access-token', token)
     .end((err, res) => {
@@ -69,15 +73,14 @@ function addNewCard(card) {
 
 export function createCard(token, card) {
   return dispatch => {
-    dispatch(addNewCard(card));
-
     request
       .post('/api/collection/card')
       .set('x-access-token', token)
+      .query({ populate: 'createdBy' })
       .send(card)
       .end((err, res) => {
         if(err) throw err;
-        if(res.success) throw res.message;
+        dispatch(addNewCard(res.body));
       });
   };
 }

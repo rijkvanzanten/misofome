@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "cd ./api && npm install && cd ../webapp && npm install && npm run build",
-    "dev": "nodemon index.js --watch api",
+    "dev": "BABEL_ENV=development NODE_ENV=development nodemon index.js --watch api",
     "start": "NODE_ENV=production node index.js"
   },
   "repository": {
