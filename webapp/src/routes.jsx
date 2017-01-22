@@ -7,6 +7,7 @@ import Cards from './containers/Cards';
 import Profile from './containers/Profile';
 import Login from './containers/Login';
 import Register from './containers/Register';
+import Progress from './containers/Progress';
 
 function requireAuth(store) {
   return (nextState, replaceWith) => {
@@ -26,6 +27,7 @@ const routes = store => (
     <IndexRoute component={Favorites} onEnter={requireAuth(store)} />
     <Route path="/kaarten" component={Cards} onEnter={requireAuth(store)} />
     <Route path="/profiel" component={Profile} onEnter={requireAuth(store)} />
+    <Route path="/voortgang" component={Progress} onEnter={requireAuth(store)} />
     <Route path="/login" component={Login} />
     <Route path="/registreer" component={Register} />
   </Route>
