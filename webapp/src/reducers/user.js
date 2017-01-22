@@ -54,6 +54,13 @@ function user(state = defaultState, action) {
       }
     }
 
+    case 'UPDATE_USER': {
+      return {
+        ...state,
+        info: action.user
+      }
+    }
+
     default: {
       return state;
     }

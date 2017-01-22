@@ -1,19 +1,24 @@
+/* global FormData */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
-import IconButton from 'material-ui/IconButton';
-import IconSettings from 'material-ui/svg-icons/action/settings';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlipMove from 'react-flip-move';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
 import Card from '../components/Card';
 
-import { updateUser } from '../actions/user';
+import IconButton from 'material-ui/IconButton';
+import IconSettings from 'material-ui/svg-icons/action/settings';
+import CircularProgress from 'material-ui/CircularProgress';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+
+import { fetchCards } from '../actions/cards';
+import { updateUserInfo } from '../actions/user';
 
 const styles = {
   header: {
@@ -56,12 +61,14 @@ const styles = {
 };
 
 const mapStateToProps = state => ({ cards: state.cards, user: state.user });
-const mapDispatchToProps = dispatch => bindActionCreators({ updateUser }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ fetchCards, updateUserInfo }, dispatch);
 
 class Profile extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
+      page: 1,
       settingsOpen: false,
     };
 
@@ -82,33 +89,22 @@ class Profile extends Component {
     const formData = new FormData();
 
     formData.append('fullName', this.settingsName.input.value);
-    if(this.settingsImage.files) formData.append('image', this.settingsImage.files[0]);
-    this.props.updateUser(this.props.user.token, formData);
+    if(this.settingsImage.files && this.settingsImage.files[0])
+      formData.append('image', this.settingsImage.files[0]);
+
+    this.props.updateUserInfo(this.props.user.token, formData);
 
     this.closeDialog();
   }
 
+  componentDidMount() {
+    this.props.fetchCards(this.props.user.token, this.state.page, 'createdAt', { 'where[createdBy]': this.props.user.info._id});
+    this.setState(state => ({page: state.page + 1}));
+  }
+
   render() {
-    const actions = [
-      <FlatButton
-        label="Annuleer"
-        primary
-        onTouchTap={this.closeDialog}
-      />,
-      <FlatButton
-        label="Sla op"
-        primary
-        keyboardFocused
-        onTouchTap={this.saveSettings}
-      />,
-    ];
-
-    const cards = Object.keys(this.props.cards)
-      .map(key => this.props.cards[key])
-      .filter(card => card.user._id === this.props.user._id)
-      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-
-    const favoritesIDs = this.props.user.favorites.map(card => card._id);
+    const items = Object.keys(this.props.cards.items)
+      .map(key => this.props.cards.items[key]);
 
     return (
       <div>
@@ -123,22 +119,41 @@ class Profile extends Component {
           )}
         />
         <header style={styles.header}>
-          <img style={styles.avatar} src={`/${this.props.user.image.filename}`} />
-          <h2 style={styles.name}>{this.props.user.fullName}</h2>
+          <img style={styles.avatar} src={`/${this.props.user.info.image.filename}`} />
+          <h2 style={styles.name}>{this.props.user.info.fullName}</h2>
         </header>
         <main>
-          {cards.map(card =>
-            <Card
-              card={card}
-              key={card._id}
-              favorite={favoritesIDs.indexOf(card._id) !== -1}
-            />,
-          )}
+          <InfiniteScroll
+            next={this.fetchCards}
+            hasMore={this.props.cards.moreCardsAvailable}
+            loader={<CircularProgress size={60} thickness={7} style={{textAlign: 'center'}}/>}
+            style={{ overflow: 'hidden' }}
+            endMessage={<span></span>}
+          >
+            <FlipMove>
+              {items.map(card =>
+                <Card
+                  card={card}
+                  key={card._id}
+                />
+              )}
+              </FlipMove>
+          </InfiniteScroll>
         </main>
         <BottomNav />
         <Dialog
           title="Profiel instellingen"
-          actions={actions}
+          actions={<FlatButton
+            label="Annuleer"
+            primary
+            onTouchTap={this.closeDialog}
+          />,
+          <FlatButton
+            label="Sla op"
+            primary
+            keyboardFocused
+            onTouchTap={this.saveSettings}
+          />}
           modal={false}
           open={this.state.settingsOpen}
           onRequestClose={this.closeDialog}

@@ -18,7 +18,7 @@ function receiveCards(cards) {
   };
 }
 
-export const fetchCards = (token, page, order_by) => dispatch => {
+export const fetchCards = (token, page, order_by, ...param) => dispatch => {
   let order = 'desc';
   if(order_by === 'normalizedTitle') order = 'asc';
 
@@ -31,7 +31,8 @@ export const fetchCards = (token, page, order_by) => dispatch => {
       populate: 'createdBy',
       page,
       order_by,
-      order
+      order,
+      ...param
     })
     .set('x-access-token', token)
     .end((err, res) => {

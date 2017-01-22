@@ -96,10 +96,28 @@ export const removeFromFavorite = (user, card) => dispatch => {
   const favoriteIDs = favorites.map(card => card._id).filter(id => id !== card._id);
 
   request
-  .put('/api/user/')
-  .set('x-access-token', token)
-  .send({ favorites: favoriteIDs })
-  .end(err => {
-    if(err) throw err;
-  });
+    .put('/api/user/')
+    .set('x-access-token', token)
+    .send({ favorites: favoriteIDs })
+    .end(err => {
+      if(err) throw err;
+    });
+};
+
+function updateUser(user) {
+  return {
+    type: 'UPDATE_USER',
+    user
+  };
+}
+
+export const updateUserInfo = (token, newData) => dispatch => {
+  request
+    .put('/api/user/')
+    .set('x-access-token', token)
+    .send(newData)
+    .end((err, res) => {
+      if(err) throw err;
+      dispatch(updateUser(res.body.user));
+    });
 };
