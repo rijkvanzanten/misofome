@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import SwipeableViews from 'react-swipeable-views';
-import { VictoryLine, VictoryChart, VictoryAxis } from 'victory';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { Tabs, Tab } from 'material-ui/Tabs';
 import Paper from 'material-ui/Paper';
+import Slider from 'material-ui/Slider';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
-
-import theme from '../assets/chartTheme';
+import StressChart from '../components/StressChart';
 
 const styles = {
   paper: {
@@ -32,11 +32,25 @@ class Progress extends Component {
     super(props);
     this.state = {
       slideIndex: 0,
+      swipeableDisabled: false,
+      stressSliderValue: 0
     };
   }
 
   handleSwipe(value) {
     this.setState({ slideIndex: value });
+  }
+
+  disableSwipeable() {
+    this.setState({swipeableDisabled: true});
+  }
+
+  enableSwipeable() {
+    this.setState({swipeableDisabled: false});
+  }
+
+  sliderInput(event, value) {
+    this.setState({ stressSliderValue: value });
   }
 
   render() {
@@ -64,41 +78,41 @@ class Progress extends Component {
         <SwipeableViews
           index={this.state.slideIndex}
           onChangeIndex={this.handleSwipe.bind(this)}
+          disabled={this.state.swipeableDisabled}
         >
-
           <div style={{paddingTop: '48px'}}>
             <Paper style={styles.paper}>
-              <VictoryChart
-                theme={theme}
-                domainPadding={20}
-              >
-                <VictoryAxis
-                  tickValues={dummyData.map(data => data.date)}
-                  tickFormat={x => `${x.getDay()}/${x.getMonth()}`}
+              <div style={{padding: '50px'}}>
+                <p>Hoe gestrest voel je je nu?</p>
+                <Slider
+                  sliderStyle={{
+                    color: 'blue'
+                  }}
+                  min={0}
+                  max={100}
+                  step={1}
+                  onDragStart={this.disableSwipeable.bind(this)}
+                  onDragStop={this.enableSwipeable.bind(this)}
+                  onChange={this.sliderInput.bind(this)}
+                  value={this.state.stressSliderValue}
                 />
-                <VictoryAxis
-                  dependentAxis
-                  tickFormat={x => x}
-                />
-                <VictoryLine
-                  data={dummyData}
-                  x="date"
-                  y="score"
-                  interpolation="basis"
-                  animate={
-                    {
-                      duration: 2000,
-                      onLoad: {
-                        duration: 1000
-                      },
-                      onEnter: {
-                        duration: 500,
-                        before: () => ({y: 0})
-                      }
-                    }
-                  }
-                />
-              </VictoryChart>
+                <RaisedButton
+                  fullWidth={true}
+                  primary={true}
+                  label="Sla op" />
+              </div>
+            </Paper>
+            <Paper style={styles.paper}>
+              {this.props.stressResults.length > 2 ? <StressChart data={dummyData} /> : (
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '225px'
+                }}>
+                  <p style={{width: '50%', textAlign: 'center', color: '#757575'}}>Doe de spanningstest om je resultaten te zien!</p>
+                </div>
+              )}
             </Paper>
           </div>
 
