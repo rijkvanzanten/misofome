@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import FlipMove from 'react-flip-move';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import IconButton from 'material-ui/IconButton';
 import IconAdd from 'material-ui/svg-icons/content/add';
@@ -9,6 +10,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
@@ -42,15 +44,18 @@ class Cards extends Component {
 
     this.state = {
       newCard: false,
+      page: 1,
     };
 
     this.openDialog = this.openDialog.bind(this);
     this.closeDialog = this.closeDialog.bind(this);
     this.postCard = this.postCard.bind(this);
+    this.fetchCards = this.fetchCards.bind(this);
   }
 
   componentDidMount() {
-    this.props.fetchCards(this.props.user.token);
+    const { items } = this.props.cards;
+    if(!items.length) this.fetchCards(1);
   }
 
   openDialog() {
@@ -74,6 +79,11 @@ class Cards extends Component {
     this.closeDialog();
   }
 
+  fetchCards(page) {
+    this.props.fetchCards(this.props.user.token, this.state.page, 'createdAt');
+    this.setState(state => ({page: state.page++}));
+  }
+
   render() {
     const actions = [
       <FlatButton
@@ -89,11 +99,7 @@ class Cards extends Component {
       />,
     ];
 
-    const cards = Object.keys(this.props.cards)
-      .map(key => this.props.cards[key])
-      .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-
-    const favoritesIDs = this.props.user.favorites.map(card => card._id);
+    const { cards: { items } } = this.props;
 
     return (
       <div>
@@ -110,13 +116,18 @@ class Cards extends Component {
         <CardToolbar />
         <main>
           <FlipMove>
-            {cards.map(card =>
-              <Card
-                card={card}
-                key={card._id}
-                favorite={favoritesIDs.indexOf(card._id) !== -1}
-              />,
-            )}
+            <InfiniteScroll
+              next={this.fetchCards}
+              hasMore={this.props.cards.moreCardsAvailable}
+              loader={<CircularProgress size={60} thickness={7} />}
+            >
+              {items.map(card =>
+                <Card
+                  card={card}
+                  key={card._id}
+                />
+              )}
+            </InfiniteScroll>
           </FlipMove>
         </main>
         <BottomNav />

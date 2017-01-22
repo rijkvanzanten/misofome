@@ -49,12 +49,15 @@ class Favorites extends Component {
   }
 
   render() {
+    const { user } = this.props;
+    const { snackbarCard, snackbarOpen } = this.state;
+
     return (
       <div>
         <TopBar title="Favorieten" />
         <main>
           <FlipMove>
-            {this.props.user.favorites.map(card =>
+            {user.info.favorites.map(card =>
               <Card
                 card={card}
                 key={card._id}
@@ -66,8 +69,8 @@ class Favorites extends Component {
         </main>
         <BottomNav />
         <Snackbar
-          open={this.state.snackbarOpen}
-          message={this.state.snackbarCard.title + ' uit favorieten verwijderd'}
+          open={snackbarOpen}
+          message={snackbarCard.title + ' uit favorieten verwijderd'}
           action="zet terug"
           autoHideDuration={4000}
           onActionTouchTap={this.undoRemoveFromFavorites}

@@ -58,8 +58,8 @@ class Card extends Component {
     return (
       <CardContainer style={styles.CardContainer}>
         <CardHeader
-          title={card.user.fullName}
-          avatar={card.user.image.filename}
+          title={card.createdBy.fullName}
+          avatar={card.createdBy.image.filename}
           subtitle={moment(card.createdAt).fromNow()}
         />
 

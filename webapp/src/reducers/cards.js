@@ -1,17 +1,33 @@
-const defaultState = {};
+const defaultState = {
+  moreCardsAvailable: true,
+  page: 1,
+  filter: {},
+  items: []
+};
 
 function cards(state = defaultState, action) {
   switch (action.type) {
-    case 'RECEIVE_CARDS': {
-      const newState = {
+    case 'REQUEST_CARDS': {
+      return {
         ...state,
-      };
+        page: action.page,
+        filter: action.filter
+      }
+    }
 
-      action.cards.forEach((card) => {
-        newState[card._id] = card;
-      });
+    case 'RECEIVE_CARDS': {
+      return {
+        ...state,
+        items: [...state.items, ...action.cards],
+        moreCardsAvailable: action.moreCardsAvailable
+      }
+    }
 
-      return newState;
+    case 'CLEAR_CARDS': {
+      return {
+        ...state,
+        items: []
+      }
     }
 
     case 'ADD_CARD': {

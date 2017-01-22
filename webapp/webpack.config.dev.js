@@ -4,8 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   context: __dirname,
   entry: [
-    'webpack/hot/dev-server',
-    'webpack-hot-middleware/client',
+    'webpack-dev-server/client?http://localhost:3001',
+    'webpack/hot/only-dev-server',
     './src/index.jsx',
   ],
   output: {
