@@ -4,14 +4,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   context: __dirname,
   entry: [
-    'webpack-dev-server/client',
+    'webpack-dev-server/client?http://localhost:3001',
     'webpack/hot/only-dev-server',
     './src/index.jsx',
   ],
   output: {
     path: '/',
     filename: 'bundle.js',
-    publicPath: '/',
+    publicPath: 'http://localhost:3001/',
   },
   devtool: 'eval',
   target: 'web',

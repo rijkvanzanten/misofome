@@ -3,9 +3,19 @@ const WebpackDevServer = require('webpack-dev-server');
 const config = require('./webpack.config.dev.js');
 
 module.exports = new WebpackDevServer(webpack(config), {
-  publicPath: config.output.publicPath,
+  publicPath: 'http://localhost:3001/',
+  noInfo: false,
+  quiet: false,
+  inline: true,
   hot: true,
-  noInfo: true,
+  stats: {
+    colors: true,
+    hash: false,
+    timings: true,
+    chunks: false,
+    chunkModules: false,
+    modules: false,
+  },
   historyApiFallback: true,
   proxy: {
     '/**': {
