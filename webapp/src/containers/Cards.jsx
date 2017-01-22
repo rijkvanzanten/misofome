@@ -138,7 +138,15 @@ class Cards extends Component {
           <InfiniteScroll
             next={this.fetchCards}
             hasMore={this.props.cards.moreCardsAvailable}
-            loader={<CircularProgress size={60} thickness={7} style={{textAlign: 'center'}}/>}
+            loader={
+              <div style={{
+                width: '100%',
+                textAlign: 'center',
+                marginTop: '50px'
+              }}>
+                <CircularProgress size={50} />
+              </div>
+            }
             style={{ overflow: 'hidden' }}
             endMessage={<span></span>}
           >
