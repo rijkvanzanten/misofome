@@ -118,7 +118,6 @@ router.put('/', checkToken, uploadFile, processFile, (req, res) => {
 
       user.save((err, user) => {
         // Delete password property of user object
-        console.log(user);
         user.password = undefined;
 
         // Username already exists
