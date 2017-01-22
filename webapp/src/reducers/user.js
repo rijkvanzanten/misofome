@@ -61,6 +61,32 @@ function user(state = defaultState, action) {
       }
     }
 
+    case 'ADD_STRESS': {
+      return {
+        ...state,
+        info: {
+          ...state.info,
+          stressTestResults: [
+            ...state.info.stressTestResults,
+            action.result
+          ]
+        }
+      }
+    }
+
+    case 'ADD_AMISOS': {
+      return {
+        ...state,
+        info: {
+          ...state.info,
+          amisosResults: [
+            ...state.info.amisosResults,
+            action.result
+          ]
+        }
+      }
+    }
+
     default: {
       return state;
     }

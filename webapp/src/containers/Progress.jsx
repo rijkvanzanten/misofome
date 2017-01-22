@@ -12,20 +12,16 @@ import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
 import StressChart from '../components/StressChart';
 
+import { addStressResult, addAmisosResult } from '../actions/user';
+
 const styles = {
   paper: {
     margin: '10px'
   }
 };
 
-const dummyData = [
-  {score: 53, date: new Date('2017')},
-  {score: 22, date: new Date('2016')},
-  {score: 61, date: new Date('2012')},
-  {score: 31, date: new Date('2005')},
-];
-
-const mapStateToProps = state => ({ stressResults: state.user.info.stressTestResults, amisosResults: state.user.info.amisosResults });
+const mapStateToProps = state => ({ stressTestResults: state.user.info.stressTestResults, amisosResults: state.user.info.amisosResults });
+const mapDispatchToProps = dispatch => bindActionCreators({ addStressResult, addAmisosResult }, dispatch);
 
 class Progress extends Component {
   constructor(props) {
@@ -42,6 +38,15 @@ class Progress extends Component {
 
   sliderInput(event, value) {
     this.setState({ stressSliderValue: value });
+  }
+
+  saveStress() {
+    const result = {
+      score: this.state.stressSliderValue,
+      date: Date.now()
+    };
+
+    this.props.addStressResult(result);
   }
 
   render() {
@@ -112,11 +117,12 @@ class Progress extends Component {
                   primary={true}
                   label="Sla op"
                   style={{marginTop: '20px'}}
+                  onTouchTap={this.saveStress.bind(this)}
                 />
               </div>
             </Paper>
             <Paper style={styles.paper}>
-              {this.props.stressResults.length > 2 ? <StressChart data={dummyData} /> : (
+              {this.props.stressTestResults.length > 2 ? <StressChart /> : (
                 <div style={{
                   display: 'flex',
                   justifyContent: 'center',
@@ -139,4 +145,4 @@ class Progress extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Progress);
+export default connect(mapStateToProps, mapDispatchToProps)(Progress);

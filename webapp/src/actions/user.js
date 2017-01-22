@@ -1,5 +1,7 @@
 import request from 'superagent';
 
+// Login
+// -----------------------------------------------------------------------------
 function fetchUser() {
   return {
     type: 'FETCH_USER',
@@ -43,6 +45,8 @@ export const authenticateUser = user => dispatch => {
     });
 };
 
+// Register new user
+// -----------------------------------------------------------------------------
 export const registerUser = user => dispatch => {
   dispatch(fetchUser());
 
@@ -57,6 +61,8 @@ export const registerUser = user => dispatch => {
     });
 };
 
+// Modify favorites
+// -----------------------------------------------------------------------------
 function addFavorite(card) {
   return {
     type: 'ADD_FAVORITE',
@@ -104,6 +110,8 @@ export const removeFromFavorite = (user, card) => dispatch => {
     });
 };
 
+// Update user
+// -----------------------------------------------------------------------------
 function updateUser(user) {
   return {
     type: 'UPDATE_USER',
@@ -119,5 +127,57 @@ export const updateUserInfo = (token, newData) => dispatch => {
     .end((err, res) => {
       if(err) throw err;
       dispatch(updateUser(res.body.user));
+    });
+};
+
+// Update tests
+// -----------------------------------------------------------------------------
+function addStress(result) {
+  return {
+    type: 'ADD_STRESS',
+    result
+  };
+}
+
+function addAmisos(result) {
+  return {
+    type: 'ADD_AMISOS',
+    result
+  };
+}
+
+export const addStressResult = result => (dispatch, getState) => {
+  dispatch(addStress(result));
+
+  const state = getState();
+  const { token } = state.user;
+  const { stressTestResults } = state.user.info;
+
+  stressTestResults.push(result);
+
+  request
+    .put('/api/user/')
+    .set('x-access-token', token)
+    .send({ stressTestResults })
+    .end(err => {
+      if(err) throw err;
+    });
+};
+
+export const addAmisosResult = result => (dispatch, getState) => {
+  dispatch(addAmisos(result));
+
+  const state = getState();
+  const { token } = state.user;
+  const { amisosResults } = state.user.info;
+
+  amisosResults.push(result);
+
+  request
+    .put('/api/user/')
+    .set('x-access-token', token)
+    .send({ amisosResults })
+    .end(err => {
+      if(err) throw err;
     });
 };
