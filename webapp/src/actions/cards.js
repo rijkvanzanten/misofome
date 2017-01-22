@@ -38,7 +38,7 @@ export function clearCards() {
 
 export const fetchCards = (token, page, order_by) => dispatch => {
   let order = 'desc';
-  if(order_by === 'title') order = 'asc';
+  if(order_by === 'normalizedTitle') order = 'asc';
 
   dispatch(requestCards(order_by, page));
 

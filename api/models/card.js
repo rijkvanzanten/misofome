@@ -8,6 +8,7 @@ const cardSchema = mongoose.Schema({
   },
 
   title: String,
+  normalizedTitle: String,
   content: String,
   category: String,
   image: Object,
@@ -16,6 +17,11 @@ const cardSchema = mongoose.Schema({
 });
 
 const Card = mongoose.model('card', cardSchema);
+
+cardSchema.pre('save', function(next) {
+  this.normalizedTitle = this.get('title').toLowerCase();
+  next();
+});
 
 // Disable editing by others
 Card.userLock = true;
