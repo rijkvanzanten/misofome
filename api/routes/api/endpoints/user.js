@@ -46,7 +46,7 @@ router.post('/login', (req, res) => {
             .populate({
               path: 'favorites',
               populate: {
-                path: 'user',
+                path: 'createdBy',
               },
             })
             .exec((err, user) => {
