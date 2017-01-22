@@ -104,7 +104,8 @@ class Profile extends Component {
 
   render() {
     const items = Object.keys(this.props.cards.items)
-      .map(key => this.props.cards.items[key]);
+      .map(key => this.props.cards.items[key])
+      .filter(card => card.createdBy._id === this.props.user.info._id);
 
     return (
       <div>
@@ -165,7 +166,7 @@ class Profile extends Component {
           onRequestClose={this.closeDialog}
         >
           <TextField
-            defaultValue={this.props.user.fullName}
+            defaultValue={this.props.user.info.fullName}
             floatingLabelText="Naam"
             ref={(el) => { this.settingsName = el; }}
           />
