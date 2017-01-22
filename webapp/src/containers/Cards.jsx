@@ -57,7 +57,7 @@ class Cards extends Component {
 
   componentDidMount() {
     const { items } = this.props.cards;
-    if(!items.length) this.fetchCards(1);
+    if(!Object.keys(items.length).length) this.fetchCards(1);
   }
 
   openDialog() {
