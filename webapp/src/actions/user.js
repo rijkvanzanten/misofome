@@ -80,3 +80,26 @@ export const addToFavorite = (user, card) => dispatch => {
       if(err) throw err;
     });
 };
+
+function removeFavorite(card) {
+  return {
+    type: 'REMOVE_FAVORITE',
+    card,
+  };
+}
+
+export const removeFromFavorite = (user, card) => dispatch => {
+  const { token, info: { favorites } } = user;
+
+  dispatch(removeFavorite(card));
+
+  const favoriteIDs = favorites.map(card => card._id).filter(id => id !== card._id);
+
+  request
+  .put('/api/user/')
+  .set('x-access-token', token)
+  .send({ favorites: favoriteIDs })
+  .end(err => {
+    if(err) throw err;
+  });
+};

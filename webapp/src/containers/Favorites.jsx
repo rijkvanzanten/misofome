@@ -11,10 +11,10 @@ import BottomNav from '../components/BottomNav';
 import Card from '../components/Card';
 
 import { createCard, fetchCards } from '../actions/cards';
-import { updateUser } from '../actions/user';
+import { addToFavorite } from '../actions/user';
 
 const mapStateToProps = state => ({ user: state.user, cards: state.cards });
-const mapDispatchToProps = dispatch => bindActionCreators({ createCard, fetchCards, updateUser }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ createCard, fetchCards, addToFavorite }, dispatch);
 class Favorites extends Component {
   constructor(props) {
     super(props);
@@ -41,9 +41,10 @@ class Favorites extends Component {
   }
 
   undoRemoveFromFavorites() {
-    this.props.updateUser(this.props.user.token, {
-      favorites: update(this.props.user.favorites, { $push: [this.state.snackbarCard] })
-    });
+    const { user, addToFavorite } = this.props;
+    const card = this.state.snackbarCard;
+
+    addToFavorite(user, card);
 
     this.closeSnackbar();
   }
@@ -57,7 +58,7 @@ class Favorites extends Component {
         <TopBar title="Favorieten" />
         <main>
           <FlipMove>
-            {user.info.favorites.map(card =>
+            {user.info.favorites.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)).map(card =>
               <Card
                 card={card}
                 key={card._id}

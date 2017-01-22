@@ -34,6 +34,26 @@ function user(state = defaultState, action) {
       }
     }
 
+    case 'ADD_FAVORITE': {
+      return {
+        ...state,
+        info: {
+          ...state.info,
+          favorites: [...state.info.favorites, action.card]
+        }
+      }
+    }
+
+    case 'REMOVE_FAVORITE': {
+      return {
+        ...state,
+        info: {
+          ...state.info,
+          favorites: state.info.favorites.filter(card => card._id !== action.card._id)
+        }
+      }
+    }
+
     default: {
       return state;
     }

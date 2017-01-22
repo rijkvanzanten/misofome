@@ -8,7 +8,7 @@ import IconButton from 'material-ui/IconButton';
 import FavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 import Favorite from 'material-ui/svg-icons/action/favorite';
 
-import { addToFavorite } from '../actions/user';
+import { addToFavorite, removeFromFavorite } from '../actions/user';
 
 moment.locale('nl');
 
@@ -19,7 +19,7 @@ const styles = {
 };
 
 const mapStateToProps = state => ({ user: state.user });
-const mapDispatchToProps = dispatch => bindActionCreators({ addToFavorite }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ addToFavorite, removeFromFavorite }, dispatch);
 
 class Card extends Component {
   constructor(props) {
@@ -32,18 +32,25 @@ class Card extends Component {
     this.toggleFavorite = this.toggleFavorite.bind(this);
   }
 
+  componentDidMount() {
+    const { favorites } = this.props.user.info;
+    const { card } = this.props;
+
+    const favoritesIDs = favorites.map(card => card._id);
+
+    if(favoritesIDs.indexOf(card._id) !== -1) this.setState({ favorite: true });
+  }
+
   toggleFavorite() {
-    const { card, user, addToFavorite } = this.props;
+    const { card, user, addToFavorite, removeFromFavorite } = this.props;
 
     if(!this.state.favorite) {
       addToFavorite(user, card);
     } else {
-      this.props.updateUser(user.token, {
-        favorites: [...user.favorites.map(card => card._id).filter(id => id !== card._id)]
-      });
+      removeFromFavorite(user, card);
 
       if(this.props.openSnackbar) {
-        this.props.openSnackbar(this.props.card);
+        this.props.openSnackbar(card);
       }
     }
 
