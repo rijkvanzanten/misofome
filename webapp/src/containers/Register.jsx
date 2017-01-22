@@ -46,6 +46,20 @@ class Register extends Component {
     this.register = this.register.bind(this);
   }
 
+  componentDidUpdate() {
+    const { user } = this.props;
+
+    if(!user.loggingIn && !user.err && user.token.length) {
+      const { location } = this.props;
+
+      if (location.state && location.state.nextPathname) {
+        this.props.router.replace(location.state.nextPathname);
+      } else {
+        this.props.router.replace('/');
+      }
+    }
+  }
+
   register() {
     const { registerUser } = this.props; // eslint-disable-line no-shadow
 
@@ -53,11 +67,7 @@ class Register extends Component {
     const password = this.password.input.value;
     const fullName = this.fullName.input.value;
 
-    registerUser({ username, password, fullName }, (success) => {
-      if (success) {
-        this.props.router.replace('/');
-      }
-    });
+    registerUser({ username, password, fullName });
 
     this.setState({ registering: true });
   }
