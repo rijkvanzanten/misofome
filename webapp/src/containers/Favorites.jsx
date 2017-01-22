@@ -87,7 +87,7 @@ class Favorites extends Component {
         <BottomNav />
         <Snackbar
           open={snackbarOpen}
-          message={snackbarCard.title + ' uit favorieten verwijderd'}
+          message={'Kaart uit favorieten verwijderd'}
           action="zet terug"
           autoHideDuration={4000}
           onActionTouchTap={this.undoRemoveFromFavorites}
