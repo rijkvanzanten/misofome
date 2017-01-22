@@ -32,7 +32,14 @@ const UserSchema = mongoose.Schema({
       filename: 'random-svg',
     },
   },
-  amisosResults: Array,
+  amisosResults: {
+    type: Array,
+    default: []
+  },
+  stressTestResults: {
+    type: Array,
+    default: []
+  }
 });
 
 // Set fullName key to be username by default
