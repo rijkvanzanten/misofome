@@ -57,16 +57,33 @@ class Favorites extends Component {
       <div>
         <TopBar title="Favorieten" />
         <main>
-          <FlipMove>
-            {user.info.favorites.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)).map(card =>
-              <Card
-                card={card}
-                key={card._id}
-                favorite={true}
-                openSnackbar={this.openSnackbar}
-              />
-            )}
-          </FlipMove>
+          {user.info.favorites.length ?
+            <FlipMove>
+              {user.info.favorites.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)).map(card =>
+                <Card
+                  card={card}
+                  key={card._id}
+                  favorite={true}
+                  openSnackbar={this.openSnackbar}
+                />
+              )}
+            </FlipMove> :
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              textAlign: 'center',
+              height: 'calc(100vh - 64px - 56px)', // TODO: cleanup in ile 77
+            }}>
+              <p style={{
+                color: '#757575'
+              }}>Je favoriete kaarten verschijnen hier!</p>
+              <p style={{
+                color: '#757575'
+              }}>Sla je favoriete kaarten op het met hartje om ze hier te tonen</p>
+            </div>
+          }
         </main>
         <BottomNav />
         <Snackbar
