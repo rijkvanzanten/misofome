@@ -71,7 +71,7 @@ class Card extends Component {
           null
         }
 
-        <CardTitle title={card.title} />
+        <CardTitle title={card.title} subtitle={card.category} />
         <CardText>
           {card.content}
         </CardText>

@@ -19,7 +19,7 @@ class CardToolbar extends Component {
     super(props);
 
     this.state = {
-      value: 1,
+      value: false,
     };
   }
 
@@ -31,17 +31,21 @@ class CardToolbar extends Component {
     fetchCards(token, 1, order_by);
   }
 
+  setCategory(event, target, value) {
+    this.setState({ value });
+    this.props.changeCategory(value);
+  }
+
   render() {
     return (
       <Toolbar>
         <ToolbarGroup firstChild>
-          <DropDownMenu value={this.state.value} onChange={this.filterCards}>
-            <MenuItem value={1} primaryText="Alle Categorieën" />
-            <MenuItem value={2} primaryText="Relaxatie" />
-            <MenuItem value={3} primaryText="Concentratie" />
-            <MenuItem value={4} primaryText="Associatie" />
-            <MenuItem value={5} primaryText="Confrontatie" />
-            <MenuItem value={6} primaryText="Overig" />
+          <DropDownMenu value={this.state.value} onChange={this.setCategory.bind(this)}>
+            <MenuItem value={false} primaryText="Alle Categorieën" />
+            <MenuItem value="Relaxatie" primaryText="Relaxatie" />
+            <MenuItem value="Concentratie" primaryText="Concentratie" />
+            <MenuItem value="Associatie" primaryText="Associatie" />
+            <MenuItem value="Overig" primaryText="Overig" />
           </DropDownMenu>
         </ToolbarGroup>
         <ToolbarGroup>

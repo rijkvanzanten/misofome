@@ -94,7 +94,7 @@ router.post('/', uploadFile, processFile, (req, res) => {
     }
 
     const { _id } = user;
-    const token = jwt.sign({ _id }, app.get('secretString'));
+    const token = jwt.sign({ _id }, hashSecret);
 
     return res.status(201).json({ token, user });
   });

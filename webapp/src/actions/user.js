@@ -42,3 +42,17 @@ export const authenticateUser = user => dispatch => {
       }
     });
 };
+
+export const registerUser = user => dispatch => {
+  dispatch(fetchUser());
+
+  request
+    .post('/api/user/')
+    .send(user)
+    .end((err, res) => {
+      if(res.ok) {
+        const { user, token } = res.body;
+        return dispatch(receiveUser(user, token));
+      }
+    });
+};

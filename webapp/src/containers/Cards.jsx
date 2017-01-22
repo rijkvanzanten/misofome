@@ -12,6 +12,8 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
@@ -47,12 +49,18 @@ class Cards extends Component {
       newCard: false,
       page: 1,
       order_by: 'updatedAt',
+      selectValue: 'Relaxatie',
+      category: false,
     };
 
     this.openDialog = this.openDialog.bind(this);
     this.closeDialog = this.closeDialog.bind(this);
     this.postCard = this.postCard.bind(this);
     this.fetchCards = this.fetchCards.bind(this);
+  }
+
+  changeCategory(category) {
+    this.setState({ category });
   }
 
   componentDidMount() {
@@ -68,6 +76,10 @@ class Cards extends Component {
     this.setState({ newCard: false });
   }
 
+  setSelect(event, index, value) {
+    this.setState({selectValue: value});
+  }
+
   postCard() {
     const formData = new FormData();
 
@@ -75,6 +87,7 @@ class Cards extends Component {
 
     if (this.cardContent.input.refs.input.value) formData.append('content', this.cardContent.input.refs.input.value);
     if (this.cardImage.files[0]) formData.append('image', this.cardImage.files[0]);
+    formData.append('category', this.state.selectValue);
 
     this.props.createCard(this.props.user.token, formData);
 
@@ -104,6 +117,10 @@ class Cards extends Component {
       items = cards.sort((a, b) => a.normalizedTitle.localeCompare(b.normalizedTitle));
     }
 
+    if(this.state.category) {
+      items = cards.filter(item => item.category === this.state.category);
+    }
+
     return (
       <div>
         <TopBar
@@ -116,7 +133,7 @@ class Cards extends Component {
             </IconButton>
           )}
         />
-        <CardToolbar changeOrder={this.changeOrder.bind(this)}/>
+        <CardToolbar changeOrder={this.changeOrder.bind(this)} changeCategory={this.changeCategory.bind(this)}/>
         <main>
           <InfiniteScroll
             next={this.fetchCards}
@@ -166,6 +183,17 @@ class Cards extends Component {
             multiLine
             rows={3}
           />
+          <SelectField
+            floatingLabelText="Categorie"
+            value={this.state.selectValue}
+            onChange={this.setSelect.bind(this)}
+            autoWidth={true}
+           >
+            <MenuItem value="Relaxatie" primaryText="Relaxatie" />
+            <MenuItem value="Concentratie" primaryText="Concentratie" />
+            <MenuItem value="Associatie" primaryText="Associatie" />
+            <MenuItem value="Overig" primaryText="Overig" />
+          </SelectField>
           <RaisedButton
             label="Upload afbeelding"
             fullWidth
