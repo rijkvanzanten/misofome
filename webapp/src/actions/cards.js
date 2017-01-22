@@ -30,12 +30,6 @@ function receiveCards(cards) {
   };
 }
 
-export function clearCards() {
-  return {
-    'type': 'CLEAR_CARDS'
-  };
-}
-
 export const fetchCards = (token, page, order_by) => dispatch => {
   let order = 'desc';
   if(order_by === 'normalizedTitle') order = 'asc';

@@ -2,7 +2,7 @@ const defaultState = {
   moreCardsAvailable: true,
   page: 1,
   filter: {},
-  items: []
+  items: {}
 };
 
 function cards(state = defaultState, action) {
@@ -16,24 +16,29 @@ function cards(state = defaultState, action) {
     }
 
     case 'RECEIVE_CARDS': {
-      return {
+      const newState = {
         ...state,
-        items: [...state.items, ...action.cards],
+        items: { ...state.items },
         moreCardsAvailable: action.moreCardsAvailable
-      }
+      };
+      action.cards.forEach(card => newState.items[card._id] = card);
+      return newState
     }
 
     case 'CLEAR_CARDS': {
       return {
         ...state,
-        items: []
+        items: {}
       }
     }
 
     case 'ADD_CARD': {
       return {
         ...state,
-        items: [action.card, ...state.items]
+        items: {
+          ...state.items,
+          [action.card._id]: action.card
+        }
       };
     }
 

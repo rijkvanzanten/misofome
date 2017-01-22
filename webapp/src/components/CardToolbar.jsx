@@ -6,6 +6,13 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import IconSort from 'material-ui/svg-icons/content/sort';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import { fetchCards } from '../actions/cards';
+
+const mapStateToProps = state => ({ user: state.user });
+const mapDispatchToProps = dispatch => bindActionCreators({ fetchCards }, dispatch);
 
 class CardToolbar extends Component {
   constructor(props) {
@@ -14,12 +21,14 @@ class CardToolbar extends Component {
     this.state = {
       value: 1,
     };
-
-    this.filterCards = this.filterCards.bind(this);
   }
 
-  filterCards(event, index, value) {
-    this.setState({ value });
+  sortCards(order_by) {
+    const { fetchCards, user: { token } } = this.props;
+
+    this.props.changeOrder(order_by);
+
+    fetchCards(token, 1, order_by);
   }
 
   render() {
@@ -51,9 +60,14 @@ class CardToolbar extends Component {
               </IconButton>
             }
           >
-            <MenuItem primaryText="Nieuwste" />
-            <MenuItem primaryText="Alfabetisch" />
-            <MenuItem primaryText="Populairst" />
+            <MenuItem
+              primaryText="Nieuwste"
+              onTouchTap={() => this.sortCards('updatedAt')}
+            />
+            <MenuItem
+              primaryText="Alfabetisch"
+              onTouchTap={() => this.sortCards('normalizedTitle')}
+            />
           </IconMenu>
         </ToolbarGroup>
       </Toolbar>
@@ -61,4 +75,4 @@ class CardToolbar extends Component {
   }
 }
 
-export default CardToolbar;
+export default connect(mapStateToProps, mapDispatchToProps)(CardToolbar);

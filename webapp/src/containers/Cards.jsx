@@ -46,6 +46,7 @@ class Cards extends Component {
     this.state = {
       newCard: false,
       page: 1,
+      order_by: 'updatedAt',
     };
 
     this.openDialog = this.openDialog.bind(this);
@@ -85,24 +86,23 @@ class Cards extends Component {
     this.setState(state => ({page: state.page + 1}));
   }
 
+  changeOrder(order_by) {
+    this.setState({ order_by });
+  }
+
   render() {
-    const actions = [
-      <FlatButton
-        label="Annuleer"
-        primary
-        onTouchTap={this.closeDialog}
-      />,
-      <FlatButton
-        label="Sla op"
-        primary
-        keyboardFocused
-        onTouchTap={this.postCard}
-      />,
-    ];
+    const cards = Object.keys(this.props.cards.items)
+      .map(key => this.props.cards.items[key]);
 
-    const { cards: { items } } = this.props;
+    let items = cards;
 
-    items.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+    if(this.state.order_by === 'updatedAt') {
+      items = cards.sort((b, a) => new Date(a.updatedAt) - new Date(b.updatedAt));
+    }
+
+    if(this.state.order_by === 'normalizedTitle') {
+      items = cards.sort((a, b) => a.normalizedTitle.localeCompare(b.normalizedTitle));
+    }
 
     return (
       <div>
@@ -116,7 +116,7 @@ class Cards extends Component {
             </IconButton>
           )}
         />
-        <CardToolbar />
+        <CardToolbar changeOrder={this.changeOrder.bind(this)}/>
         <main>
           <InfiniteScroll
             next={this.fetchCards}
@@ -137,7 +137,19 @@ class Cards extends Component {
         <BottomNav />
         <Dialog
           title="Nieuwe Kaart"
-          actions={actions}
+          actions={[
+            <FlatButton
+              label="Annuleer"
+              primary
+              onTouchTap={this.closeDialog}
+            />,
+            <FlatButton
+              label="Sla op"
+              primary
+              keyboardFocused
+              onTouchTap={this.postCard}
+            />
+          ]}
           modal={false}
           open={this.state.newCard}
           onRequestClose={this.closeDialog}
