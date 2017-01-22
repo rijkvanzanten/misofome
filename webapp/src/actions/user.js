@@ -56,3 +56,27 @@ export const registerUser = user => dispatch => {
       }
     });
 };
+
+function addFavorite(card) {
+  return {
+    type: 'ADD_FAVORITE',
+    card,
+  };
+}
+
+export const addToFavorite = (user, card) => dispatch => {
+  const { token, info: { favorites } } = user;
+
+  dispatch(addFavorite(card));
+
+  const favoriteIDs = favorites.map(card => card._id);
+  favoriteIDs.push(card._id);
+
+  request
+    .put('/api/user/')
+    .set('x-access-token', token)
+    .send({ favorites: favoriteIDs })
+    .end(err => {
+      if(err) throw err;
+    });
+};

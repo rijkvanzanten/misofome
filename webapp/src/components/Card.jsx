@@ -8,7 +8,7 @@ import IconButton from 'material-ui/IconButton';
 import FavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 import Favorite from 'material-ui/svg-icons/action/favorite';
 
-import { updateUser } from '../actions/user';
+import { addToFavorite } from '../actions/user';
 
 moment.locale('nl');
 
@@ -19,7 +19,7 @@ const styles = {
 };
 
 const mapStateToProps = state => ({ user: state.user });
-const mapDispatchToProps = dispatch => bindActionCreators({ updateUser }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ addToFavorite }, dispatch);
 
 class Card extends Component {
   constructor(props) {
@@ -33,12 +33,10 @@ class Card extends Component {
   }
 
   toggleFavorite() {
-    const { card, user } = this.props;
+    const { card, user, addToFavorite } = this.props;
 
     if(!this.state.favorite) {
-      this.props.updateUser(user.token, {
-        favorites: [...user.favorites.map(card => card._id), card._id]
-      });
+      addToFavorite(user, card);
     } else {
       this.props.updateUser(user.token, {
         favorites: [...user.favorites.map(card => card._id).filter(id => id !== card._id)]

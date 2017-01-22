@@ -1,17 +1,5 @@
 import request from 'superagent';
 
-/**
- * Haal 10 kaarten op van user
- *
- * Haal 10 kaarten op:
- *  recent
- *  alfabetisch
- *
- * Haal favoriete kaarten op
- *
- * Maak nieuwe kaart
- */
-
 // Get cards
 // -----------------------------------------------------------------------------
 function requestCards(order_by, page) {
@@ -51,9 +39,6 @@ export const fetchCards = (token, page, order_by) => dispatch => {
       dispatch(receiveCards(res.body));
     });
 };
-
-
-
 
 
 // Create new card
