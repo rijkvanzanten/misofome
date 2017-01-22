@@ -57,7 +57,7 @@ class Cards extends Component {
 
   componentDidMount() {
     const { items } = this.props.cards;
-    if(!Object.keys(items.length).length) this.fetchCards(1);
+    if(!Object.keys(items).length) this.fetchCards(1);
   }
 
   openDialog() {
@@ -123,6 +123,7 @@ class Cards extends Component {
             hasMore={this.props.cards.moreCardsAvailable}
             loader={<CircularProgress size={60} thickness={7} style={{textAlign: 'center'}}/>}
             style={{ overflow: 'hidden' }}
+            endMessage={<span></span>}
           >
             <FlipMove>
               {items.map(card =>
