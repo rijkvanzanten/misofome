@@ -12,7 +12,7 @@ function cards(state = defaultState, action) {
         ...state,
         page: action.page,
         filter: action.filter
-      }
+      };
     }
 
     case 'RECEIVE_CARDS': {
@@ -22,14 +22,14 @@ function cards(state = defaultState, action) {
         moreCardsAvailable: action.moreCardsAvailable
       };
       action.cards.forEach(card => newState.items[card._id] = card);
-      return newState
+      return newState;
     }
 
     case 'CLEAR_CARDS': {
       return {
         ...state,
         items: {}
-      }
+      };
     }
 
     case 'ADD_CARD': {

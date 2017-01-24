@@ -31,7 +31,7 @@ function user(state = defaultState, action) {
         ...state,
         loggingIn: false,
         err: action.err,
-      }
+      };
     }
 
     case 'ADD_FAVORITE': {
@@ -41,7 +41,7 @@ function user(state = defaultState, action) {
           ...state.info,
           favorites: [...state.info.favorites, action.card]
         }
-      }
+      };
     }
 
     case 'REMOVE_FAVORITE': {
@@ -51,14 +51,14 @@ function user(state = defaultState, action) {
           ...state.info,
           favorites: state.info.favorites.filter(card => card._id !== action.card._id)
         }
-      }
+      };
     }
 
     case 'UPDATE_USER': {
       return {
         ...state,
         info: action.user
-      }
+      };
     }
 
     case 'ADD_STRESS': {
@@ -71,7 +71,7 @@ function user(state = defaultState, action) {
             action.result
           ]
         }
-      }
+      };
     }
 
     case 'ADD_AMISOS': {
@@ -84,7 +84,7 @@ function user(state = defaultState, action) {
             action.result
           ]
         }
-      }
+      };
     }
 
     default: {

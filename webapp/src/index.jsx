@@ -1,3 +1,4 @@
+/* global window, document */
 import React from 'react';
 import { render } from 'react-dom';
 import { Router, browserHistory } from 'react-router';
@@ -39,5 +40,5 @@ render(
       routes={routes(store)}
     />
   </Provider>,
-  document.getElementById('root'),
+  document.getElementById('root')
 );

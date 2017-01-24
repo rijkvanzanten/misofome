@@ -50,7 +50,7 @@ class Favorites extends Component {
 
   render() {
     const { user } = this.props;
-    const { snackbarCard, snackbarOpen } = this.state;
+    const { snackbarOpen } = this.state;
 
     return (
       <div>
