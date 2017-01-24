@@ -18,7 +18,7 @@ To help us resolve your issue more quickly, please use the following template:
 ## Version Info
  - Git branch: (Or commit hash)
  - Node version:
- - Mongoose version:
  - OS name and version:
+
 
 ## Additional info
