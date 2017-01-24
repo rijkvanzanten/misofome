@@ -1,7 +1,8 @@
-# Create Document {#create}
+# Collection endpoints
+The collection endpoints are the main way of dealing with data in the api. The endpoints allow to perform the CRUD operations on your own defined data models.
 
-{% method -%}
-## Request
+## Create Document
+### Request
 ```
 POST /api/collection/[collection-name]
 ```
@@ -11,14 +12,11 @@ POST /api/collection/[collection-name]
 |collection |REQUIRED|Collection in which the document will be added |
 |data       |        | This data and its architecture is based on your specific project's schema. |
 
-{% common -%}
 Example request
-{% sample lang="http" -%}
 ```bash
 $ curl -H "Content-Type: application/json" -H "x-access-token: eyJhbGc..." -X POST -d '{"title":"Card Title","content":"#supermooi"}' http://localhost:3000/api/collection/card
 ```
 
-{% sample lang="js" -%}
 ```js
 const card = {
   title: 'Card Title',
@@ -31,9 +29,8 @@ request
   .send(card)
   .end();
 ```
-{% endmethod %}
 
-## Example Response
+### Example Response
 Successful request returns the created record
 ```json
 {
@@ -58,10 +55,8 @@ Successful request returns the created record
 
 ---
 
-# Get Documents {#read}
-
-{% method -%}
-## Request
+## Get Documents
+### Request
 ```
 GET /api/collection/[collection-name]
 ```
@@ -75,14 +70,11 @@ GET /api/collection/[collection-name]
 |per_page   |Number | Set amount of results to return per call|
 |page       |Number | Set which page to retrieve (required per_page to be set) |
 
-{% common -%}
 Example request
-{% sample lang="http" -%}
 ```bash
 $ curl -H "Content-Type: application/json" -H "x-access-token: eyJhbGc..." http://localhost:3000/api/collection/card?order_by=title&order=desc
 ```
 
-{% sample lang="js" -%}
 ```js
 request
   .get('/api/collection/card')
@@ -93,9 +85,8 @@ request
   .set('x-access-token', 'eyJhbGc...')
   .end();
 ```
-{% endmethod %}
 
-## Example Response
+### Example Response
 Successful request returns array of selected records
 ```json
 [
@@ -129,10 +120,8 @@ Successful request returns array of selected records
 
 ---
 
-# Update Document {#update}
-
-{% method -%}
-## Request
+## Update Document
+### Request
 ```
 PUT /api/collection/[collection-name]/[document-id]
 ```
@@ -143,14 +132,11 @@ PUT /api/collection/[collection-name]/[document-id]
 |document |REQUIRED| Document to update |
 |data       |        | This data and its architecture is based on your specific project's schema. |
 
-{% common -%}
 Example request
-{% sample lang="http" -%}
 ```bash
 $ curl -H "Content-Type: application/json" -H "x-access-token: eyJhbGc..." -X PUT -d '{"content":"Updated content"}' http://localhost:3000/api/collection/card/58838a07592d2a574cd706bf
 ```
 
-{% sample lang="js" -%}
 ```js
 request
   .put('/api/collection/card/58838a07592d2a574cd706bf')
@@ -160,9 +146,8 @@ request
   })
   .end();
 ```
-{% endmethod %}
 
-## Example Response
+### Example Response
 Successful request returns the updated record
 ```json
 {
@@ -188,10 +173,9 @@ Successful request returns the updated record
 
 ---
 
-# Delete Document {#delete}
+## Delete Document
 
-{% method -%}
-## Request
+### Request
 ```
 DELETE /api/collection/[collection-name]/[document-id]
 ```
@@ -201,21 +185,17 @@ DELETE /api/collection/[collection-name]/[document-id]
 |collection |REQUIRED|Collection in which the document exists       |
 |document   |REQUIRED| Document to delete |
 
-{% common -%}
 Example request
-{% sample lang="http" -%}
 ```bash
 $ curl -H "x-access-token: eyJhbGc..." -X DELETE http://localhost:3000/api/collection/card/58838a07592d2a574cd706bf
 ```
 
-{% sample lang="js" -%}
 ```js
 request
   .delete('/api/collection/card/58838a07592d2a574cd706bf')
   .set('x-access-token', 'eyJhbGc...')
   .end();
 ```
-{% endmethod %}
 
 #### Possible HTTP status codes
 |Code     |Description            |

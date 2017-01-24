@@ -1,8 +1,10 @@
-# Login User {#user-login}
+# User endpoints
+The user endpoints are made to be able to authenticate users and to make adjustments to the users collection.
+
+## Login User
 Authenticate user based on login credentials
 
-{% method -%}
-## Request
+### Request
 ```
 POST /api/user/login
 ```
@@ -12,14 +14,11 @@ POST /api/user/login
 |username |REQUIRED|              |
 |password |REQUIRED|              |
 
-{% common -%}
 Example request
-{% sample lang="http" -%}
 ```bash
 $ curl -H "Content-Type: application/json" -X POST -d '{"username":"rijk","password":"rijk"}' http://localhost:3000/api/user/login
 ```
 
-{% sample lang="js" -%}
 ```js
 const user = {
   username: 'rijk',
@@ -31,9 +30,8 @@ request
   .send(user)
   .end();
 ```
-{% endmethod %}
 
-## Example Response
+### Example Response
 Successful request returns the logged in user and the access token
 ```json
 {
@@ -62,11 +60,10 @@ Successful request returns the logged in user and the access token
 
 ---
 
-# Create User {#user-create}
+## Create User
 Create new user
 
-{% method -%}
-## Request
+### Request
 ```
 POST /api/user/
 ```
@@ -77,14 +74,11 @@ POST /api/user/
 |password   |REQUIRED|                                                                            |
 |Custom Data|        | This data and its architecture is based on your specific project's schema. |
 
-{% common -%}
 Example request
-{% sample lang="http" -%}
 ```bash
 $ curl -H "Content-Type: application/json" -X POST -d '{"username":"rijk","password":"rijk"}' http://localhost:3000/api/user/
 ```
 
-{% sample lang="js" -%}
 ```js
 const user = {
   username: 'rijk',
@@ -96,9 +90,8 @@ request
   .send(user)
   .end();
 ```
-{% endmethod %}
 
-## Example Response
+### Example Response
 Successful request returns the created user and the access token
 ```json
 {
@@ -127,11 +120,10 @@ Successful request returns the created user and the access token
 
 ---
 
-# Update User {#user-update}
+## Update User
 Update current logged in user
 
-{% method -%}
-## Request
+### Request
 ```
 PUT /api/user/
 ```
@@ -142,14 +134,11 @@ PUT /api/user/
 |password |REQUIRED|              |
 |Custom Data|        | This data and its architecture is based on your specific project's schema. |
 
-{% common -%}
 Example request
-{% sample lang="http" -%}
 ```bash
 $ curl -H "Content-Type: application/json" -H "x-access-token: eyJhbGc..." -X PUT -d '{"fullName": "Rijk van Zanten"}' http://localhost:3000/api/user/
 ```
 
-{% sample lang="js" -%}
 ```js
 request
   .put('/api/user')
@@ -159,9 +148,8 @@ request
   })
   .end();
 ```
-{% endmethod %}
 
-## Example Response
+### Example Response
 Successful request returns the updated user
 ```json
 {
