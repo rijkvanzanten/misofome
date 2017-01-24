@@ -1,6 +1,6 @@
 # Misofome
 
-[![Build Status](https://semaphoreci.com/api/v1/rijkvanzanten/misofome/branches/master/badge.svg)](https://semaphoreci.com/rijkvanzanten/misofome)
+[![Build Status](https://semaphoreci.com/api/v1/rijkvanzanten/misofome/branches/master/shields_badge.svg)](https://semaphoreci.com/rijkvanzanten/misofome)
 
 ## Description
 For a project at the AUAS, we we’re asked to redesign an app which was made to fit the needs of a particular group of patients of anxiety disorders. The app was build up using a React-Redux-Node-MongoDB stack, which uses material-ui for it’s UI and Mongoose as a DBMS. The api was made to be as loosely coupled from the app as possible, which resulted in a separated Mongoose schema folder which enables future developers on the project to easily modify the erb, without having to tinker in the back-end logic.
