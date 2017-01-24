@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "cd ./api && npm install && cd ../webapp && npm install && npm run build",
     "dev": "BABEL_ENV=development NODE_ENV=development nodemon index.js --watch api",
-    "test": "eslint --ignore-pattern '/node_modules/'",
+    "test": "cd ./api && npm test && cd ../webapp && npm test",
     "start": "NODE_ENV=production node index.js"
   },
   "repository": {
