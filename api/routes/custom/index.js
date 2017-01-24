@@ -17,9 +17,9 @@ chance.mixin({
     }
 
     let svg = `
-      <svg 
-        version="1.1" 
-        viewBox="0 0 100 100" 
+      <svg
+        version="1.1"
+        viewBox="0 0 100 100"
         xmlns="http://www.w3.org/2000/svg"
         style="background-color: ${options.background}"
       >
@@ -27,7 +27,7 @@ chance.mixin({
 
     for (let i = 0; i < options.lines; i++) {
       svg += `
-        <line 
+        <line
           stroke="${chance.color()}"
           stroke-width="${point(1, 5)}"
           opacity="${options.opacity}"
@@ -39,7 +39,7 @@ chance.mixin({
 
     for (let i = 0; i < options.circles; i++) {
       svg += `
-        <circle 
+        <circle
           cx="${point()}"
           cy="${point()}"
           r="${point(1, options.max_size / 2)}"
@@ -50,7 +50,7 @@ chance.mixin({
     }
 
     for (let i = 0; i < options.triangles; i++) {
-      const s = size = options.max_size;
+      const s = options.max_size;
       const x = point();
       const y = point();
       svg += `

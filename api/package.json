@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "STANDALONE=true nodemon index.js",
+    "test": "eslint --ext .js --ignore-pattern 'uploads/**' .",
     "start": "NODE_ENV=production STANDALONE=true node index.js"
   },
   "repository": {
@@ -33,6 +34,7 @@
     "multer": "^1.2.1"
   },
   "devDependencies": {
+    "eslint": "^3.14.0",
     "nodemon": "^1.11.0"
   }
 }
