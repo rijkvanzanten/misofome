@@ -8,61 +8,19 @@ All JavaScript examples use the [superagent](https://github.com/visionmedia/supe
 
 ## Table of Contents
 
-* [Introduction](README.md)
+### Introduction
+* [Installation](introduction.md#installation)
+* [Authentication](introduction.md#authentication)
+* [Data schemas](introduction.md#schemas)
 
 ### Endpoints
 #### User
-* [Login](user.md#user-login)
-* [Create User](user.md#user-create)
-* [Update User](user.md#user-update)
+* [Login](user.md#login-user)
+* [Create User](user.md#create-user)
+* [Update User](user.md#update-user)
 
 #### Collection
-* [Create](collection.md#create)
-* [Read](collection.md#read)
-* [Update](collection.md#update)
-* [Delete](collection.md#delete)
-
-
-## Schema
-All API access is accessed through http://example.com/api/. All data is sent and received as JSON.
-
-## Installation
-The first thing is to clone the [Misofome repo](https://github.com/RijkvanZanten/misofome)
-
-```bash
-$ git clone https://github.com/RijkvanZanten/misofome.git
-```
-
-Install the node_modules with
-```bash
-$ npm install
-```
-
-The API can be started by starting in production mode with
-```bash
-$ npm start
-```
-
-You could also start the app in development mode (with autoreloading) with
-```bash
-$ npm run dev
-```
-
-If you want to develop just the api, run the above commands in the api directory. This way, the app will skip launching the webpack building of the frontend, which saves on building time when editing the API.
-
-## Authentication
-Most routes require you to authenticate by providing an access-token as `x-access-token` HTTP header.
-
-See the `/user/` endpoints section of this documentation on how to receive this authentication token.
-
-Example request to /collection/cards
-```bash
-$ curl -H "x-access-token: eyJhbG..." http://localhost:3000/api/collection/cards/
-```
-
-```js
-request
-  .get('http://localhost:3000/api/collection/cards/')
-  .set('x-access-token', 'eyJhbG...')
-  .send();
-```
+* [Create](collection.md#create-document)
+* [Read](collection.md#get-documents)
+* [Update](collection.md#update-document)
+* [Delete](collection.md#delete-document)
