@@ -22,11 +22,7 @@ Starting the app in production mode will optimize the front-end bundles and decr
 
 
 ## Editing the code
-The api can be run standalone. The webapp can technically run by itself, but makes requests to local endpoints which correspond to the api. It'll probably error out when opening the app in the browser while running in standalone mode.
-
-It was made this to be able to edit the webapp without having to worry about the api and vice versa.
-
-The different endpoints and usage of the api is detailed in the docs folder in this repo. In these docs, you'll also find instructions on how to edit the erb.
+Please check out the [contributing guidelines](CONTRIBUTING.md) before you start working on features or bugs
 
 ## Credits:
 
