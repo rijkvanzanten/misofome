@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "STANDALONE=true node index.js",
     "build": "BABEL_ENV=production NODE_ENV=production webpack",
+    "test": "eslint --ext .jsx --ext .js --ignore-pattern 'public/dist/*' **/*",
     "start": "NODE_ENV=production STANDALONE=true node index.js"
   },
   "repository": {
